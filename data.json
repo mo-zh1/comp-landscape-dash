@@ -1,0 +1,779 @@
+{
+  "generated_at": "2026-05-15 05:52 UTC",
+  "stats": {
+    "total": 12,
+    "active": 9,
+    "stealth": 2,
+    "acquired": 1,
+    "conflicts_pending": 0,
+    "candidates_pending": 0
+  },
+  "companies": [
+    {
+      "id": "7a54d841-f133-4f2b-9433-ea7be854dda5",
+      "canonical_name": "4Point Geophysical AI",
+      "website": "https://4point.ai",
+      "linkedin_url": null,
+      "hq_city": null,
+      "hq_country": "Canada",
+      "founded_year": 2024,
+      "target_customer": "Mining + government (DoE, KSA)",
+      "core_product": "SIIM (Spatially Informed Intelligence Model) — GNN + RL + Physics-Informed Inversion for predictive ore mapping",
+      "pricing_model": "SaaS + possible royalty/success-fee hybrid",
+      "stage_focus": "greenfield",
+      "latest_round_type": "pre_seed",
+      "latest_round_amount_usd": null,
+      "latest_round_date": "2024-01-01",
+      "business_model_summary": "Pre-Seed AI/ML predictive ore mapping platform — GTM via government procurement (DoE, KSA) + accelerators (Techstars, CDL, Google for Startups); possible hybrid SaaS + royalty/success-fee model",
+      "status": "active",
+      "last_updated": "2026-05-15T02:34:22.768684",
+      "confidence_score": 0.8,
+      "notes": "{\"tech\": \"GNN-Hybrid + RL + Physics-Informed Inversion\", \"accelerators\": [\"Techstars LA FW24\", \"Google for Startups Canada\", \"CDL\"]}",
+      "technical": "GNN-Hybrid (Graph Neural Networks) + Reinforcement Learning (RL) + Physics-Informed Inversion (explicit multi-technology stack). SIIM = Spatially Informed Intelligence Model. Outputs \"physics-informed realizations\" with uncertainty volumes. Data types not clearly publicly disclosed (language implies real geophysics + drill data, but not officially confirmed).",
+      "stage_description": "Multi-stage: Target Screening (greenfield) + Survey Design + Drill Prioritization",
+      "latest_round_text": "Pre-Seed · amount not publicly disclosed · 2024 (Techstars FW24 cohort)",
+      "funding_trajectory": "Pre-Seed (2024, via Techstars FW24 LA accelerator, JPM-sponsored cohort) — that's the only round on record",
+      "investors_text": "Techstars (Techstars LA Fall/Winter 2024 cohort, lead), Google for Startups Accelerator Canada, J.P. Morgan (sponsor of Techstars LA cohort). Website also lists Spatial Capital and ID3 Ventures as investors (not on Crunchbase/PitchBook)",
+      "valuation": "Undisclosed (Pre-Seed, amount not disclosed)"
+    },
+    {
+      "id": "c286b969-7c1b-4afa-ba3e-dfed39da6562",
+      "canonical_name": "Datarock",
+      "website": "https://www.imdex.com/software/datarock",
+      "linkedin_url": "https://www.linkedin.com/company/datarock/",
+      "hq_city": "Melbourne",
+      "hq_country": "Australia",
+      "founded_year": 2018,
+      "target_customer": "Mining companies (full mining cycle)",
+      "core_product": "Computer vision for core/chip imagery analytics (CNN-based, Detectron2/PyTorch)",
+      "pricing_model": "Software subscription + Applied Science consulting (wholly owned by IMDEX)",
+      "stage_focus": "greenfield,resource_def,production",
+      "latest_round_type": "acquired",
+      "latest_round_amount_usd": null,
+      "latest_round_date": "2026-02-01",
+      "business_model_summary": "Wholly-owned AI/geoscience software subsidiary of IMDEX Limited (ASX:IMD) — production-ready, explainable AI core/chip imagery analytics + Applied Science consulting; ~64 employees; consolidated into IMDEX's Digital Earth Knowledge portfolio",
+      "status": "acquired",
+      "last_updated": "2026-05-15T02:34:22.767876",
+      "confidence_score": 0.98,
+      "notes": "{\"acquirer\": \"IMDEX Limited (ASX:IMD)\", \"acquisition_date\": \"2026-02-01\", \"implied_valuation_aud\": 63000000}",
+      "technical": "Computer vision / image segmentation — CNN-based (Detectron2 framework on PyTorch), including ResNet34-based mask models, instance + semantic segmentation, OCR. Data = real core photography (RGB) + airborne + satellite data; expert annotations supervised training (177+ manually annotated image tiles). No diffusion claim.",
+      "stage_description": "Multi-stage: exploration + resource definition + production (full mining cycle)",
+      "latest_round_text": "N/A — 100% acquired by IMDEX. Most recent event: Feb 1, 2026 IMDEX completed remaining 49% acquisition ~A$31M (USD $21.5M), achieving 100% ownership",
+      "funding_trajectory": "2018: Solve+Dius JV origin → Nov 2021: IMDEX acquires initial 30% (A$5.5M) → Nov 2021–Jul 2024: increased to 51% (incremental investments) → Feb 1, 2026: acquired remaining 49% completing 100% ownership (A$31M). Cumulative IMDEX paid: est. A$60M+",
+      "investors_text": "IMDEX Limited (ASX:IMD) — sole owner. IMDEX is Perth-headquartered, founded 1980, ASX-listed company, CEO Paul House. No external shareholders beyond IMDEX.",
+      "valuation": "Implied ~A$63M / USD ~$45M (IMDEX 2026/2/1 acquired remaining 49% for A$31M, implied 100% valuation ~A$63M) — acquisition-implied, not market valuation"
+    },
+    {
+      "id": "ee54dd15-53af-4b4a-8776-ae3ebd642307",
+      "canonical_name": "Fleet Space Technologies",
+      "website": "https://www.fleetspace.com",
+      "linkedin_url": null,
+      "hq_city": "Adelaide",
+      "hq_country": "Australia",
+      "founded_year": 2015,
+      "target_customer": "Mining majors (Rio Tinto, Barrick Gold, Ma'aden)",
+      "core_product": "ExoSphere — multimodal AI + proprietary LEO satellite network + Geode smart seismic sensors",
+      "pricing_model": "Exploration-as-a-service (end-to-end, not SaaS)",
+      "stage_focus": "greenfield",
+      "latest_round_type": "series_d",
+      "latest_round_amount_usd": 100000000.0,
+      "latest_round_date": "2024-12-12",
+      "business_model_summary": "Vertically-integrated exploration-as-a-service platform — proprietary LEO satellite network + smart seismic sensors (Geode) + multimodal AI (ExoSphere); end-to-end service delivery model (not SaaS); Series D $100M @ $525M valuation, 130+ employees globally",
+      "status": "active",
+      "last_updated": "2026-05-15T02:34:22.769832",
+      "confidence_score": 0.99,
+      "notes": "{\"valuation_usd\": 525000000, \"tech\": \"FNO + FWI 100x faster\", \"data\": \"3D ANT + MT + gravity + active seismic\"}",
+      "technical": "Multimodal AI foundation model (company claims \"world-first multimodal foundation model for critical mineral discovery\"). Building: Full Waveform Inversion (FWI) accelerated by Fourier Neural Operators (FNO) — claims 100× faster than traditional methods. Data = real multi-physics: 3D Ambient Noise Tomography (ANT) + Magnetotelluric (MT) + Gravity + HVSR + Active Seismic + IP + drilling data, collected via proprietary Geode sensors + LEO satellite telemetry. No diffusion claim; satellites used for data transmission not imaging.",
+      "stage_description": "Multi-stage: focus on pre-drill targeting + survey + full exploration lifecycle",
+      "latest_round_text": "Series D · USD $100M (A$150M) · Dec 11–12, 2024 · at USD $525M (A$800M+) valuation (led by Teachers' Venture Growth)",
+      "funding_trajectory": "Early Seed/A/B (specifics not fully disclosed) → Series C A$50M (May 2023, led by Blackbird Ventures) → Series D A$150M (Dec 2024, led by TVG) at A$800M+ valuation (valuation doubled in 19 months)",
+      "investors_text": "Series D Lead: Teachers' Venture Growth (TVG, Ontario Teachers' Pension Plan growth arm). Returning: Blackbird Ventures (Australia, prior Series C lead), Hostplus (Australian superannuation), Horizons Ventures (Hong Kong, Li Ka-shing), Artesian Venture Partners (Australia), Alumni Ventures (US). Earlier: Grok Ventures (Mike Cannon-Brookes family office)",
+      "valuation": "✅ USD $525M (A$800M+) (Series D Dec 11–12, 2024 — only company in cohort with disclosed valuation)"
+    },
+    {
+      "id": "707470e6-1dcb-4491-bbc1-1f884565e2ea",
+      "canonical_name": "GeologicAI",
+      "website": "https://www.geologicai.com",
+      "linkedin_url": null,
+      "hq_city": "Calgary",
+      "hq_country": "Canada",
+      "founded_year": 2013,
+      "target_customer": "Mining majors",
+      "core_product": "AI core scanning trailers (on-site) + AI software subscription for resource characterization",
+      "pricing_model": "Hardware + software subscription + services hybrid",
+      "stage_focus": "resource_def",
+      "latest_round_type": "series_b",
+      "latest_round_amount_usd": 44000000.0,
+      "latest_round_date": "2025-07-17",
+      "business_model_summary": "B2B hardware + software + services hybrid for mining majors — on-site core-scanning trailers (operated by GeologicAI) + AI software subscription, expanding via M&A (RMS, Lumo Analytics)",
+      "status": "active",
+      "last_updated": "2026-05-15T02:34:22.767722",
+      "confidence_score": 0.98,
+      "notes": "{\"tech\": \"CNN (Detectron2 on PyTorch) for XRF + hyperspectral + LiDAR\", \"prior_name\": \"Enersoft (oil & gas, pivoted 2021)\"}",
+      "technical": "Convolutional Neural Networks (CNN) — \"trained on millions of validated mineral samples\". Data = real multi-sensor core scan data: XRF (X-ray fluorescence) + hyperspectral (SWIR + VNIR) + magnetic susceptibility + LiDAR + RGB imagery + LIBS (via Lumo acquisition). No diffusion / no synthetic data / no satellite imagery.",
+      "stage_description": "Resource definition + characterization + production optimization (scans already-drilled cores, does NOT do greenfield prediction)",
+      "latest_round_text": "Series B · $44M USD / $60.5M CAD · Jul 17, 2025 (all-equity, led by Blue Earth Capital)",
+      "funding_trajectory": "Bootstrapped/early grants → Series A $30M USD (Jul 2023, led by Breakthrough Energy Ventures $20M + Export Development Canada $10M) → Series B $44M USD (Jul 2025, led by Blue Earth Capital). Total raised: ~$74M USD",
+      "investors_text": "Series A: Breakthrough Energy Ventures (lead, Bill Gates-backed), Export Development Canada. Series B: Blue Earth Capital (lead, Swiss impact investor), BHP Ventures, Rio Tinto, Breakthrough Energy Ventures (follow-on), other undisclosed returning investors",
+      "valuation": "Undisclosed (Series B $44M USD Jul 2025 — BetaKit confirmed Segal declined to disclose valuation)"
+    },
+    {
+      "id": "84e0cbf6-9267-4393-92f8-aa7fe74ee9ca",
+      "canonical_name": "KoBold Metals",
+      "website": "https://koboldmetals.com",
+      "linkedin_url": null,
+      "hq_city": null,
+      "hq_country": null,
+      "founded_year": 2018,
+      "target_customer": "Mining industry and critical mineral supply chain",
+      "core_product": "AI-powered mineral exploration and development platform combining novel sensors, centralized data systems, and predictive models for discovering critical minerals (copper, cobalt, lithium, nickel)",
+      "pricing_model": null,
+      "stage_focus": null,
+      "latest_round_type": null,
+      "latest_round_amount_usd": null,
+      "latest_round_date": null,
+      "business_model_summary": "Full-stack scientific mineral exploration and development company that explores globally on both 100% KoBold-owned projects and via joint ventures. Combines AI, scientific computing, and human expertise to discover and develop critical mineral deposits. Revenue model appears to be based on mining operations and joint venture arrangements.",
+      "status": "active",
+      "last_updated": "2026-05-15T05:24:56.280483",
+      "confidence_score": 0.5,
+      "notes": null,
+      "technical": null,
+      "stage_description": null,
+      "latest_round_text": null,
+      "funding_trajectory": null,
+      "investors_text": null,
+      "valuation": null
+    },
+    {
+      "id": "6d67beed-5b72-43cd-b392-aa8e002897a2",
+      "canonical_name": "Material Difference",
+      "website": "https://materialdifference.earth",
+      "linkedin_url": null,
+      "hq_city": "London",
+      "hq_country": "UK",
+      "founded_year": 2024,
+      "target_customer": "Critical mineral explorers",
+      "core_product": "Uncertainty-aware + explainable AI for critical mineral exploration",
+      "pricing_model": null,
+      "stage_focus": "resource_def",
+      "latest_round_type": "pre_seed",
+      "latest_round_amount_usd": null,
+      "latest_round_date": "2026-03-31",
+      "business_model_summary": "Stealth-mode Pre-Seed startup — uncertainty-aware + explainable AI for critical mineral exploration; backed by Entrepreneurs First (talent investor) + Founders Factory/Rio Tinto accelerator; 2 founders, recruiting founding engineer, no public product yet",
+      "status": "stealth",
+      "last_updated": "2026-05-15T02:34:22.770077",
+      "confidence_score": 0.6,
+      "notes": "{\"accelerators\": [\"Entrepreneurs First\", \"Founders Factory + Rio Tinto 2026 cohort\"]}",
+      "technical": "Publicly stated differentiation = uncertainty quantification + explainable AI + value-of-information (decision theory); specific ML architecture not public (not diffusion, no GNN / foundation model claim — still in stealth)",
+      "stage_description": "Resource delineation + ore body knowledge (language implies brownfield / resource definition stage, not pure greenfield)",
+      "latest_round_text": "Pre-Seed via Entrepreneurs First (EF) — standard EF talent investment, amount not separately disclosed (EF typically £100K for ~10% equity)",
+      "funding_trajectory": "EF Pre-Seed (talent investor, amount not disclosed) → Founders Factory + Rio Tinto Mining Tech Accelerator selected (March 2026 cohort, publicly announced March 31, 2026)",
+      "investors_text": "Entrepreneurs First (EF) — London-based \"talent investor\", invests in founders before company formation, typical deal $100K for ~10%. Founders Factory + Rio Tinto accelerator (2026 spring cohort, 1 of 6 companies) — not traditional VC, but provides funding + Rio Tinto operational pilot access",
+      "valuation": "Undisclosed (Pre-Seed via Entrepreneurs First — EF standard ~£100K; amount + valuation both not publicly disclosed)"
+    },
+    {
+      "id": "2a8f9aa0-a303-4927-aca2-be52d0d1ca01",
+      "canonical_name": "Mineral Forecast",
+      "website": "https://www.mineralforecast.com",
+      "linkedin_url": null,
+      "hq_city": "Santiago",
+      "hq_country": "Chile",
+      "founded_year": 2014,
+      "target_customer": "Mining & exploration companies (LATAM-focused: Chile, Peru, Mexico)",
+      "core_product": "Multi-model ML SaaS for greenfield and brownfield mineral discovery",
+      "pricing_model": "SaaS — public 3-tier pricing",
+      "stage_focus": "greenfield,brownfield",
+      "latest_round_type": "seed",
+      "latest_round_amount_usd": 3310000.0,
+      "latest_round_date": "2023-09-12",
+      "business_model_summary": "B2B SaaS platform offering AI-powered geological exploration and drilling optimization tools with tiered pricing based on users (up to 10, up to 100, unlimited), number of projects, and additional professional services. Revenue from subscription fees, per-project charges, setup fees, and professional services like training workshops ($1,000 per workshop).",
+      "status": "active",
+      "last_updated": "2026-05-15T05:25:57.384429",
+      "confidence_score": 0.9,
+      "notes": "{\"customers\": [\"First Majestic\", \"SQM\"], \"accelerators\": [\"Harvard Innovation Labs\", \"Techstars Boston F23\"]}",
+      "technical": "Multi-model ML approach (no single architecture claim) — supervised learning (e.g. predicting copper grade using drillhole data) + unsupervised learning (identifying alteration zones). Data = real multi-source: satellite imagery + geochemical surveys + drilling logs + geophysics + public geological data. No diffusion / no foundation model claim.",
+      "stage_description": "Explicitly multi-stage: greenfield (claim staking) + brownfield + existing mine optimization (\"supports each greenfield and brownfield drilling target\")",
+      "latest_round_text": "$20K Seed (Techstars Boston F23 cohort, Sep 12, 2023) ⚠️ This is standard Techstars cohort investment only; additional ~$3.3M from other investors, specific rounds not clearly disclosed",
+      "funding_trajectory": "Harvard Innovation Labs incubation → Harvard Venture Incubation Program → Launch Lab X → Techstars Boston F23 ($20K, Sep 2023) → subsequent unattributed VC rounds → total raised $3.31–3.32M (PitchBook / CBInsights)",
+      "investors_text": "Techstars (Boston F23), Alumni Ventures, Spider Capital Partners, Launch Lab X, Harvard Venture Incubation Program + 4 undisclosed investors (CBInsights / PitchBook list 9 total investors)",
+      "valuation": "Undisclosed (total raised ~$3.31M; no valuation disclosed)"
+    },
+    {
+      "id": "cf86d6b3-4470-4bc9-bb5f-44cadefda92c",
+      "canonical_name": "Octavia",
+      "website": "https://www.octaviatech.com",
+      "linkedin_url": null,
+      "hq_city": null,
+      "hq_country": null,
+      "founded_year": null,
+      "target_customer": null,
+      "core_product": null,
+      "pricing_model": null,
+      "stage_focus": null,
+      "latest_round_type": null,
+      "latest_round_amount_usd": null,
+      "latest_round_date": null,
+      "business_model_summary": "Stealth-mode — no public information available.",
+      "status": "stealth",
+      "last_updated": "2026-05-15T02:34:22.770703",
+      "confidence_score": 0.3,
+      "notes": "{}",
+      "technical": null,
+      "stage_description": null,
+      "latest_round_text": null,
+      "funding_trajectory": null,
+      "investors_text": null,
+      "valuation": null
+    },
+    {
+      "id": "31ed845e-b46f-4ee9-a9f2-6cadab0431b8",
+      "canonical_name": "Stratum AI",
+      "website": "https://stratum.gs",
+      "linkedin_url": null,
+      "hq_city": "Toronto",
+      "hq_country": "Canada",
+      "founded_year": 2019,
+      "target_customer": "Production-stage mines globally",
+      "core_product": "SAIGE (Stratum AI Geospatial Estimator) — AI resource modeling + block models for grade control",
+      "pricing_model": "SaaS + Forward Deployed Engineers (Palantir-style)",
+      "stage_focus": "production,brownfield",
+      "latest_round_type": "seed",
+      "latest_round_amount_usd": 150000.0,
+      "latest_round_date": "2020-08-26",
+      "business_model_summary": "B2B AI resource modeling SaaS + Forward Deployed Engineer services for production-stage mines — Palantir-style GTM (embed engineers + custom deployment), funded minimally via YC seed but operating at unusual scale (18 mines globally; funding history likely incomplete)",
+      "status": "active",
+      "last_updated": "2026-05-15T02:34:22.770183",
+      "confidence_score": 0.88,
+      "notes": "{\"accelerators\": [\"Y Combinator S20\"], \"scale\": \"18 mines globally\"}",
+      "technical": "Deep Learning (per Mining Beacon: \"proprietary Machine Learning technology (Deep Learning)\"). SAIGE = Stratum AI Geospatial Estimator. Outputs block models (resource + grade control). Data = real mine site data: diamond/RC drillholes + grade control + blasthole samples + rock-chip samples. No diffusion / no synthetic data / no satellite imagery.",
+      "stage_description": "Production-stage mines + brownfield exploration (explicitly NOT greenfield — this is a core positioning differentiator)",
+      "latest_round_text": "Seed · $150K · Aug 26, 2020 (led by Y Combinator)",
+      "funding_trajectory": "Seed undisclosed (Jun 2019) → YC Seed $150K (Aug 2020) → undisclosed subsequent funding rounds. Total public funding only $150K",
+      "investors_text": "Y Combinator (lead, S20 batch), Builders VC, Two Small Fish Ventures, Soma Capital, J Seventeen Capital (1 undisclosed investor, 6 total institutional investors per Tracxn)",
+      "valuation": "Undisclosed (YC public $150K seed; remaining funding not in public databases; no valuation disclosed)"
+    },
+    {
+      "id": "b452e4e0-f06c-4560-b716-ae106475d153",
+      "canonical_name": "Terra AI",
+      "website": "https://www.terraai.com",
+      "linkedin_url": null,
+      "hq_city": "Palo Alto",
+      "hq_country": "US",
+      "founded_year": 2023,
+      "target_customer": "Mining and energy majors",
+      "core_product": "Generative AI (diffusion models) for 3D subsurface modeling + reasoning agent",
+      "pricing_model": "Enterprise SaaS — direct sales + strategic partnerships",
+      "stage_focus": "greenfield",
+      "latest_round_type": "seed",
+      "latest_round_amount_usd": 3390000.0,
+      "latest_round_date": "2023-10-01",
+      "business_model_summary": "Enterprise B2B AI platform (SaaS) — sold via direct sales + strategic partnerships to mining & energy majors",
+      "status": "active",
+      "last_updated": "2026-05-15T02:34:22.765946",
+      "confidence_score": 0.95,
+      "notes": "{\"tech\": \"diffusion models + reasoning agent\", \"data\": \"real multimodal: drill cores + geophysics + geochemistry\"}",
+      "technical": "Diffusion models / generative models (confirmed, multi-source). Generates \"millions of possible 3D subsurface models conditioned to match the signal\" + \"reasoning agent\" for campaign planning. Data = real multimodal: drill cores + geophysics + geochemistry (synthetic data only as model output, not training input).",
+      "stage_description": "Multi-stage: Target Screening (greenfield/undercover) + Survey Design + Dynamic Drilling (resource definition)",
+      "latest_round_text": "Seed · $3.39M · Oct 2023 (publicly announced 2025 when emerging from stealth)",
+      "funding_trajectory": "NSF grants → Seed $3.39M (2023, led by Khosla Ventures) → Rio Tinto strategic investment (2025) → Series A upcoming (announced intent, not closed)",
+      "investors_text": "Khosla Ventures (lead), Rio Tinto (strategic, 2025), Storyhouse Ventures, Plug and Play, TomKat Center for Sustainability (Stanford), Climate Capital, US National Science Foundation",
+      "valuation": "Undisclosed (Seed $3.4M 2023, Khosla lead; no valuation disclosed)"
+    },
+    {
+      "id": "c9de0810-fc04-4052-8121-69302a622ef9",
+      "canonical_name": "TerraDX",
+      "website": "https://www.linkedin.com/company/terradx-technologies/",
+      "linkedin_url": null,
+      "hq_city": "Vancouver",
+      "hq_country": "Canada",
+      "founded_year": 2023,
+      "target_customer": "Natural resource exploration and extraction companies in energy and mining sectors",
+      "core_product": "HORIZON Deep Neural Network for regional ore targeting (98% area reduction)",
+      "pricing_model": "B2B SaaS — direct deals & strategic partnerships",
+      "stage_focus": "greenfield",
+      "latest_round_type": "pre_seed",
+      "latest_round_amount_usd": 1500000.0,
+      "latest_round_date": "2024-04-01",
+      "business_model_summary": "B2B AI platform (SaaS) for mining sector — early-stage, GTM via direct deals & strategic partnerships (e.g., Battery X Metals JV)",
+      "status": "active",
+      "last_updated": "2026-05-15T05:52:55.241069",
+      "confidence_score": 0.85,
+      "notes": "{\"tech\": \"DNN (HORIZON) + Databricks Mosaic AI\", \"data\": \"real public geological survey data\"}",
+      "technical": "HORIZON Deep Neural Network (DNN) + Databricks Mosaic AI platform. Data = real public geological survey data — Geological Survey of New South Wales (Australia, Central Lachlan Orogen) geophysics + exploration data. No diffusion / no synthetic data / no satellite imagery.",
+      "stage_description": "Greenfield / regional targeting (HORIZON reduces area of interest by 98% before onsite exploration)",
+      "latest_round_text": "Pre-Seed · $1.5M total raised (date not publicly disclosed; per PitchBook)",
+      "funding_trajectory": "Spun out of Durendal Resources Inc. → Public launch April 2024 → Pre-Seed $1.5M (Canaccord Genuity, Haywood Securities, Research Capital) → NVIDIA Inception (July 2024, non-equity accelerator)",
+      "investors_text": "Canaccord Genuity, Haywood Securities Inc., Research Capital",
+      "valuation": "Undisclosed (Pre-Seed $1.5M; investors are Canadian investment banks/brokers, no valuation disclosed)"
+    },
+    {
+      "id": "0683458b-86ed-4354-ab9d-9679e2b14b3f",
+      "canonical_name": "VERAI",
+      "website": "https://ver-ai.com",
+      "linkedin_url": null,
+      "hq_city": "Tel Aviv",
+      "hq_country": "Israel",
+      "founded_year": 2020,
+      "target_customer": "Exploration and mining companies seeking mineral discovery and development partnerships",
+      "core_product": "AI Discovery Platform — identifies concealed deposits, owns/optionizes mineral licenses, monetizes via JVs",
+      "pricing_model": "Joint venture and strategic alliance partnerships",
+      "stage_focus": "greenfield",
+      "latest_round_type": "series_b",
+      "latest_round_amount_usd": 24000000.0,
+      "latest_round_date": "2025-02-26",
+      "business_model_summary": "VerAI uses proprietary AI platform to identify and secure 100%-owned drill-ready mineral projects, then partners with exploration/mining companies through joint ventures where partners earn into projects or strategic alliances on advanced/producing assets. VerAI can invest capital as needed to accelerate progress.",
+      "status": "active",
+      "last_updated": "2026-05-15T05:32:16.169464",
+      "confidence_score": 0.93,
+      "notes": "{\"tech\": \"AI/ML + defense intelligence search & find\", \"total_raised_usd\": 39600000}",
+      "technical": "AI/ML + \"Defense Intelligence search & find methodologies\" (founder background). \"AI Search Profiles\" library, trained on different classes of economic orebodies + geological settings. Data = real multimodal geophysics: magnetic + gravimetric + electromagnetic + seismic. No diffusion claim / no specific architecture disclosed / no synthetic data (explicitly states \"pure machine learning\").",
+      "stage_description": "Greenfield / concealed deposits in covered terrains (explicitly does NOT do brownfield — focused on \"undiscovered deposits beneath cover\")",
+      "latest_round_text": "Series B · $24M (first closing) · Feb 26, 2025 (led by Insight Partners)",
+      "funding_trajectory": "Seed/Series A early rounds (2020–2023, specifics not fully disclosed) → Series B $24M first closing (Feb 2025, Insight Partners lead). Total raised ~$39.4–39.6M (per PitchBook & CBInsights)",
+      "investors_text": "Insight Partners (Series B lead, Jeff Horing on board), Blumberg Capital (Stanton Green on board), Chrysalix Venture Capital (Charles Haythornthwaite on board), Orion Industrial Ventures / Orion Resource Partners (OIV), funds advised by T. Rowe Price Associates",
+      "valuation": "Undisclosed (Series B first closing $24M Feb 2025, Insight Partners lead; total raised $39.6M; no public valuation)"
+    }
+  ],
+  "events": [
+    {
+      "id": "fdcaed8b-a07b-42cc-b61d-7daeba5cc22e",
+      "company_id": "707470e6-1dcb-4491-bbc1-1f884565e2ea",
+      "event_type": "funding_round",
+      "event_date": "2025-07-17",
+      "payload": {
+        "round_type": "series_b",
+        "amount_usd": 44000000,
+        "lead_investors": [
+          "Blue Earth Capital"
+        ],
+        "other_investors": [
+          "BHP Ventures",
+          "Rio Tinto"
+        ]
+      },
+      "fingerprint": "008a3ba9e922edfd",
+      "source_url": "https://betakit.com",
+      "source_tier": 2,
+      "cross_references": "[]",
+      "extracted_by": "seed",
+      "confidence": 0.9,
+      "raw_text": null,
+      "created_at": "2026-05-15 01:53:20",
+      "canonical_name": "GeologicAI"
+    },
+    {
+      "id": "2e00150b-1f58-4c38-bc61-759dd0d5ab5c",
+      "company_id": "0683458b-86ed-4354-ab9d-9679e2b14b3f",
+      "event_type": "funding_round",
+      "event_date": "2025-02-26",
+      "payload": {
+        "round_type": "series_b",
+        "amount_usd": 24000000,
+        "lead_investors": [
+          "Insight Partners"
+        ],
+        "other_investors": []
+      },
+      "fingerprint": "1d934b2d5cb4bc1f",
+      "source_url": "https://www.businesswire.com",
+      "source_tier": 2,
+      "cross_references": "[]",
+      "extracted_by": "seed",
+      "confidence": 0.9,
+      "raw_text": null,
+      "created_at": "2026-05-15 01:53:20",
+      "canonical_name": "VERAI"
+    },
+    {
+      "id": "7095612c-a5a9-44c9-9882-851e6ea20a9b",
+      "company_id": "b452e4e0-f06c-4560-b716-ae106475d153",
+      "event_type": "funding_round",
+      "event_date": "2025-01-01",
+      "payload": {
+        "round_type": "strategic",
+        "amount_usd": null,
+        "lead_investors": [
+          "Rio Tinto"
+        ],
+        "other_investors": []
+      },
+      "fingerprint": "0af1fa34c2c4370f",
+      "source_url": "https://www.terraai.com",
+      "source_tier": 1,
+      "cross_references": "[]",
+      "extracted_by": "seed",
+      "confidence": 0.9,
+      "raw_text": null,
+      "created_at": "2026-05-15 01:53:20",
+      "canonical_name": "Terra AI"
+    },
+    {
+      "id": "576818ae-e033-492a-813b-7655acf2d5e6",
+      "company_id": "ee54dd15-53af-4b4a-8776-ae3ebd642307",
+      "event_type": "funding_round",
+      "event_date": "2024-12-12",
+      "payload": {
+        "round_type": "series_d",
+        "amount_usd": 100000000,
+        "lead_investors": [
+          "Teachers' Venture Growth"
+        ],
+        "other_investors": []
+      },
+      "fingerprint": "7ef7b7542d3e0e24",
+      "source_url": "https://www.fleetspace.com",
+      "source_tier": 1,
+      "cross_references": "[]",
+      "extracted_by": "seed",
+      "confidence": 0.9,
+      "raw_text": null,
+      "created_at": "2026-05-15 01:53:20",
+      "canonical_name": "Fleet Space Technologies"
+    },
+    {
+      "id": "34f7a175-148b-4ca7-8892-89fca878c4bc",
+      "company_id": "c9de0810-fc04-4052-8121-69302a622ef9",
+      "event_type": "funding_round",
+      "event_date": "2024-04-01",
+      "payload": {
+        "round_type": "pre_seed",
+        "amount_usd": 1500000,
+        "lead_investors": [
+          "Canaccord Genuity"
+        ],
+        "other_investors": [
+          "Haywood Securities"
+        ]
+      },
+      "fingerprint": "c0b4235c9011ba2c",
+      "source_url": null,
+      "source_tier": 3,
+      "cross_references": "[]",
+      "extracted_by": "seed",
+      "confidence": 0.9,
+      "raw_text": null,
+      "created_at": "2026-05-15 01:53:20",
+      "canonical_name": "TerraDX"
+    },
+    {
+      "id": "a10be0b5-84a3-443b-8e50-79dac16c1384",
+      "company_id": "b452e4e0-f06c-4560-b716-ae106475d153",
+      "event_type": "funding_round",
+      "event_date": "2023-10-01",
+      "payload": {
+        "round_type": "seed",
+        "amount_usd": 3390000,
+        "lead_investors": [
+          "Khosla Ventures"
+        ],
+        "other_investors": []
+      },
+      "fingerprint": "ce605d60b8883b68",
+      "source_url": "https://techcrunch.com",
+      "source_tier": 2,
+      "cross_references": "[]",
+      "extracted_by": "seed",
+      "confidence": 0.9,
+      "raw_text": null,
+      "created_at": "2026-05-15 01:53:20",
+      "canonical_name": "Terra AI"
+    },
+    {
+      "id": "0957fdba-30a3-4433-9baa-b0bfc528b490",
+      "company_id": "2a8f9aa0-a303-4927-aca2-be52d0d1ca01",
+      "event_type": "funding_round",
+      "event_date": "2023-09-12",
+      "payload": {
+        "round_type": "seed",
+        "amount_usd": 3310000,
+        "lead_investors": [
+          "Techstars"
+        ],
+        "other_investors": [
+          "Alumni Ventures"
+        ]
+      },
+      "fingerprint": "2e5f2880d10e68bf",
+      "source_url": null,
+      "source_tier": 3,
+      "cross_references": "[]",
+      "extracted_by": "seed",
+      "confidence": 0.9,
+      "raw_text": null,
+      "created_at": "2026-05-15 01:53:20",
+      "canonical_name": "Mineral Forecast"
+    },
+    {
+      "id": "8ac01f2d-5a09-4c3c-9b85-652e57db14a9",
+      "company_id": "707470e6-1dcb-4491-bbc1-1f884565e2ea",
+      "event_type": "funding_round",
+      "event_date": "2023-07-01",
+      "payload": {
+        "round_type": "series_a",
+        "amount_usd": 30000000,
+        "lead_investors": [
+          "Breakthrough Energy Ventures"
+        ],
+        "other_investors": [
+          "Export Development Canada"
+        ]
+      },
+      "fingerprint": "20796b20512aefab",
+      "source_url": "https://betakit.com",
+      "source_tier": 2,
+      "cross_references": "[]",
+      "extracted_by": "seed",
+      "confidence": 0.9,
+      "raw_text": null,
+      "created_at": "2026-05-15 01:53:20",
+      "canonical_name": "GeologicAI"
+    },
+    {
+      "id": "47033d65-17d6-4bc5-a77e-dedaa152156b",
+      "company_id": "ee54dd15-53af-4b4a-8776-ae3ebd642307",
+      "event_type": "funding_round",
+      "event_date": "2023-05-01",
+      "payload": {
+        "round_type": "series_c",
+        "amount_usd": 37000000,
+        "lead_investors": [
+          "Blackbird Ventures"
+        ],
+        "other_investors": []
+      },
+      "fingerprint": "12c06199f4ea3786",
+      "source_url": "https://www.fleetspace.com",
+      "source_tier": 2,
+      "cross_references": "[]",
+      "extracted_by": "seed",
+      "confidence": 0.9,
+      "raw_text": null,
+      "created_at": "2026-05-15 01:53:20",
+      "canonical_name": "Fleet Space Technologies"
+    },
+    {
+      "id": "38d73aa1-bc94-445e-b20e-3e5fc9ec35b1",
+      "company_id": "31ed845e-b46f-4ee9-a9f2-6cadab0431b8",
+      "event_type": "funding_round",
+      "event_date": "2020-08-26",
+      "payload": {
+        "round_type": "seed",
+        "amount_usd": 150000,
+        "lead_investors": [
+          "Y Combinator"
+        ],
+        "other_investors": []
+      },
+      "fingerprint": "218fbb444ba816f7",
+      "source_url": null,
+      "source_tier": 2,
+      "cross_references": "[]",
+      "extracted_by": "seed",
+      "confidence": 0.9,
+      "raw_text": null,
+      "created_at": "2026-05-15 01:53:20",
+      "canonical_name": "Stratum AI"
+    }
+  ],
+  "investors": [
+    {
+      "investor": "Alumni Ventures",
+      "relation_subtype": "follow",
+      "board_seat": 0,
+      "company": "Mineral Forecast",
+      "company_id": "2a8f9aa0-a303-4927-aca2-be52d0d1ca01"
+    },
+    {
+      "investor": "BHP Ventures",
+      "relation_subtype": "strategic",
+      "board_seat": 0,
+      "company": "GeologicAI",
+      "company_id": "707470e6-1dcb-4491-bbc1-1f884565e2ea"
+    },
+    {
+      "investor": "Blackbird Ventures",
+      "relation_subtype": "follow",
+      "board_seat": 0,
+      "company": "Fleet Space Technologies",
+      "company_id": "ee54dd15-53af-4b4a-8776-ae3ebd642307"
+    },
+    {
+      "investor": "Blue Earth Capital",
+      "relation_subtype": "lead",
+      "board_seat": 0,
+      "company": "GeologicAI",
+      "company_id": "707470e6-1dcb-4491-bbc1-1f884565e2ea"
+    },
+    {
+      "investor": "Blumberg Capital",
+      "relation_subtype": "follow",
+      "board_seat": 1,
+      "company": "VERAI",
+      "company_id": "0683458b-86ed-4354-ab9d-9679e2b14b3f"
+    },
+    {
+      "investor": "Breakthrough Energy Ventures",
+      "relation_subtype": "lead",
+      "board_seat": 0,
+      "company": "GeologicAI",
+      "company_id": "707470e6-1dcb-4491-bbc1-1f884565e2ea"
+    },
+    {
+      "investor": "Builders VC",
+      "relation_subtype": "follow",
+      "board_seat": 0,
+      "company": "Stratum AI",
+      "company_id": "31ed845e-b46f-4ee9-a9f2-6cadab0431b8"
+    },
+    {
+      "investor": "Canaccord Genuity",
+      "relation_subtype": "lead",
+      "board_seat": 0,
+      "company": "TerraDX",
+      "company_id": "c9de0810-fc04-4052-8121-69302a622ef9"
+    },
+    {
+      "investor": "Chrysalix Venture Capital",
+      "relation_subtype": "follow",
+      "board_seat": 1,
+      "company": "VERAI",
+      "company_id": "0683458b-86ed-4354-ab9d-9679e2b14b3f"
+    },
+    {
+      "investor": "Entrepreneurs First",
+      "relation_subtype": "lead",
+      "board_seat": 0,
+      "company": "Material Difference",
+      "company_id": "6d67beed-5b72-43cd-b392-aa8e002897a2"
+    },
+    {
+      "investor": "Export Development Canada",
+      "relation_subtype": "follow",
+      "board_seat": 0,
+      "company": "GeologicAI",
+      "company_id": "707470e6-1dcb-4491-bbc1-1f884565e2ea"
+    },
+    {
+      "investor": "Haywood Securities",
+      "relation_subtype": "follow",
+      "board_seat": 0,
+      "company": "TerraDX",
+      "company_id": "c9de0810-fc04-4052-8121-69302a622ef9"
+    },
+    {
+      "investor": "Horizons Ventures",
+      "relation_subtype": "follow",
+      "board_seat": 0,
+      "company": "Fleet Space Technologies",
+      "company_id": "ee54dd15-53af-4b4a-8776-ae3ebd642307"
+    },
+    {
+      "investor": "Hostplus",
+      "relation_subtype": "follow",
+      "board_seat": 0,
+      "company": "Fleet Space Technologies",
+      "company_id": "ee54dd15-53af-4b4a-8776-ae3ebd642307"
+    },
+    {
+      "investor": "Insight Partners",
+      "relation_subtype": "lead",
+      "board_seat": 1,
+      "company": "VERAI",
+      "company_id": "0683458b-86ed-4354-ab9d-9679e2b14b3f"
+    },
+    {
+      "investor": "J.P. Morgan",
+      "relation_subtype": "cohort_sponsor",
+      "board_seat": 0,
+      "company": "4Point Geophysical AI",
+      "company_id": "7a54d841-f133-4f2b-9433-ea7be854dda5"
+    },
+    {
+      "investor": "Khosla Ventures",
+      "relation_subtype": "lead",
+      "board_seat": 0,
+      "company": "Terra AI",
+      "company_id": "b452e4e0-f06c-4560-b716-ae106475d153"
+    },
+    {
+      "investor": "Orion Resource Partners",
+      "relation_subtype": "strategic",
+      "board_seat": 0,
+      "company": "VERAI",
+      "company_id": "0683458b-86ed-4354-ab9d-9679e2b14b3f"
+    },
+    {
+      "investor": "Plug and Play",
+      "relation_subtype": "follow",
+      "board_seat": 0,
+      "company": "Terra AI",
+      "company_id": "b452e4e0-f06c-4560-b716-ae106475d153"
+    },
+    {
+      "investor": "Rio Tinto",
+      "relation_subtype": "strategic",
+      "board_seat": 0,
+      "company": "Terra AI",
+      "company_id": "b452e4e0-f06c-4560-b716-ae106475d153"
+    },
+    {
+      "investor": "Rio Tinto",
+      "relation_subtype": "strategic",
+      "board_seat": 0,
+      "company": "GeologicAI",
+      "company_id": "707470e6-1dcb-4491-bbc1-1f884565e2ea"
+    },
+    {
+      "investor": "Soma Capital",
+      "relation_subtype": "follow",
+      "board_seat": 0,
+      "company": "Stratum AI",
+      "company_id": "31ed845e-b46f-4ee9-a9f2-6cadab0431b8"
+    },
+    {
+      "investor": "Storyhouse Ventures",
+      "relation_subtype": "follow",
+      "board_seat": 0,
+      "company": "Terra AI",
+      "company_id": "b452e4e0-f06c-4560-b716-ae106475d153"
+    },
+    {
+      "investor": "Teachers' Venture Growth",
+      "relation_subtype": "lead",
+      "board_seat": 0,
+      "company": "Fleet Space Technologies",
+      "company_id": "ee54dd15-53af-4b4a-8776-ae3ebd642307"
+    },
+    {
+      "investor": "Techstars",
+      "relation_subtype": "accelerator",
+      "board_seat": 0,
+      "company": "4Point Geophysical AI",
+      "company_id": "7a54d841-f133-4f2b-9433-ea7be854dda5"
+    },
+    {
+      "investor": "Techstars",
+      "relation_subtype": "accelerator",
+      "board_seat": 0,
+      "company": "Mineral Forecast",
+      "company_id": "2a8f9aa0-a303-4927-aca2-be52d0d1ca01"
+    },
+    {
+      "investor": "Y Combinator",
+      "relation_subtype": "lead",
+      "board_seat": 0,
+      "company": "Stratum AI",
+      "company_id": "31ed845e-b46f-4ee9-a9f2-6cadab0431b8"
+    }
+  ],
+  "candidates": [],
+  "digests": [
+    {
+      "id": "1aaa8dc0-9bc3-4818-b2c8-5cb71b46dbcc",
+      "created_at": "2026-05-15 05:33:24",
+      "digest_type": "on_demand",
+      "company_ids": "[\"0683458b-86ed-4354-ab9d-9679e2b14b3f\"]",
+      "content": "# On-Demand Digest: VERAI\n*Generated 2026-05-15*\n\n## Part A — Recent Activity\n\n**VERAI** has no fresh event signals in the feed since its Series B first close ($24M, led by Insight Partners, Feb 26, 2025). The company's last known status: Israel-HQ'd (founded 2020), $39.6M total raised, board seats held by Insight (Jeff Horing), Blumberg (Stanton Green), Chrysalix (Charles Haythornthwaite), plus Orion Resource Partners and T. Rowe Price funds on the cap table. **So what:** The 15-month silence post-first-close is notable — either a second tranche / Series B extension is pending, or VerAI is in heads-down execution on JV deal flow; either way, expect a discovery announcement or partnership news to be the next catalyst.\n\n## Part B — Comparative Analysis\n\n*Note: Only one company (VERAI) was provided, so \"comparative\" analysis below benchmarks VerAI against the known AI-for-mineral-exploration peer set (KoBold Metals, Earth AI, Fleet Space, Durin) using public reference points.*\n\n### Funding & Stage\nVerAI's $39.6M cumulative raise and $24M Series B first close puts it in the **mid-tier** of AI mineral exploration funding. **So what:** It is materially behind KoBold Metals (>$1B raised, T3 2024 from Andreessen/Bezos/BlackRock) and Fleet Space (~$150M Series D 2024), but ahead of seed/Series A peers like Durin. The Insight Partners + T. Rowe Price combination is unusual for a mining-tech company and signals a software-multiple thesis rather than a resource-company valuation — suggesting VerAI is being underwritten as a data/AI platform.\n\n### Technology & Product\nVerAI's stack is differentiated on two axes: (1) **multimodal real geophysics** (magnetic + gravimetric + EM + seismic) vs. peers that often lean on a single modality (KoBold heavy on geochem + ML; Fleet on seismic via Geode satellites), and (2) **defense-intelligence search heuristics** plus an \"AI Search Profiles\" library indexed to orebody class. Explicit rejection of synthetic data and diffusion models is a credibility flag. **So what:** VerAI is positioning as the \"signals-intelligence\" play on concealed deposits — strongest where surface expression is poor and multimodal fusion matters most (porphyry copper, IOCG, blind massive sulfides).\n\n### Target Market & Positioning\nVerAI's business model is uniquely **principal + platform hybrid**: it owns/optionizes 100% of licenses, then earns through JVs where mining partners earn-in by funding drilling. **So what:** This is structurally closer to KoBold's model than to pure software vendors (e.g., Seequent, GeologicAI). It captures discovery upside without bearing full drilling capex, but ties revenue to commodity cycles and JV partner discipline — a slower monetization path than SaaS, but with 10–100x asymmetric upside per discovery.\n\n### Key Risks & Opportunities\n- **Strength:** Tier-1 generalist VC backing (Insight, T. Rowe) provides software-grade capital efficiency expectations and patience for platform build-out.\n- **Weakness:** No public discovery validation event yet disclosed — peers like KoBold (Mingomba Zambia copper) and Earth AI (NSW Australia) have announced material drill hits, creating a credibility gap.\n- **Opportunity:** Copper/critical minerals supply tightness through 2026–2030 keeps majors hungry for JV pipeline; VerAI's license inventory is the moat.\n- **Risk:** 15 months of event silence increases narrative risk — needs a discovery, JV signing, or Series B final close announcement to refresh momentum.\n\n**So what:** VerAI's next 6–9 months hinge on producing at least one publicly disclosed JV partnership with a Tier-1/2 miner or a drill result — without it, the gap to KoBold widens.\n\n### Summary Table\n| Company | Stage | Tech | Market | Notable |\n|---------|-------|------|--------|---------|\n| VERAI | Series B ($24M first close Feb 2025; $39.6M total) | Multimodal geophysics (mag/grav/EM/seismic) + defense-intel search profiles; pure ML, no synthetic data | Exploration & mining co's via JV earn-ins on 100%-owned licenses | Insight Partners + T. Rowe Price backing signals software-multiple thesis; no recent event flow since Feb 2025 |\n\n---\n**Bottom line for VERAI:** Well-capitalized, technically differentiated on multimodal sensor fusion, structurally aligned with the asset-owner-plus-platform model that KoBold has validated — but needs a public discovery or marquee JV in 2026 to close the credibility gap and justify the software-investor valuation thesis."
+    }
+  ]
+}

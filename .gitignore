@@ -1,0 +1,25 @@
+# Secrets
+.env
+
+# Local-only staging database (review server writes here, never committed)
+staging.db
+
+# SQLite WAL/SHM temp files
+*.db-shm
+*.db-wal
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+.cursor/

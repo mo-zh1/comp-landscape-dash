@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Competitor Intelligence</title>
+<style>
+  :root {
+    --bg:       #0b0b0b;
+    --surface:  #111111;
+    --surface2: #161616;
+    --border:   #1e1e1e;
+    --text:     #e2e2e2;
+    --muted:    #555555;
+    --accent:   #c9a864;
+    --active-bg:   rgba(45, 90, 45, 0.25);
+    --active-text: #6fcf6f;
+    --stealth-bg:  rgba(90, 70, 20, 0.25);
+    --stealth-text:#d4a93a;
+    --acquired-bg: rgba(50, 40, 100, 0.25);
+    --acquired-text:#9d8fe0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, 'Inter', 'Helvetica Neue', sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── nav ── */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 32px;
+    height: 52px;
+    gap: 0;
+  }
+  .nav-brand {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    margin-right: 40px;
+    white-space: nowrap;
+  }
+  .nav-tabs { display: flex; gap: 0; }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 13px;
+    font-family: inherit;
+    padding: 0 18px;
+    height: 52px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover  { color: var(--text); }
+  .tab-btn.active { color: var(--text); border-bottom-color: var(--accent); }
+  .nav-right {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ── layout ── */
+  main { max-width: 1200px; margin: 0 auto; padding: 40px 32px 80px; }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* ── page headings ── */
+  h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  h2 {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-bottom: 16px;
+    margin-top: 36px;
+  }
+
+  /* ── stats row ── */
+  .stats {
+    display: flex;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .stat {
+    flex: 1;
+    background: var(--surface);
+    padding: 18px 20px;
+  }
+  .stat-value {
+    font-family: Georgia, serif;
+    font-size: 28px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── table ── */
+  .table-wrap { overflow-x: auto; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    background: var(--surface);
+  }
+  td {
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:hover td { background: var(--surface2); }
+  tr:last-child td { border-bottom: none; }
+
+  /* ── badges ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .badge-active   { background: var(--active-bg);   color: var(--active-text); }
+  .badge-stealth  { background: var(--stealth-bg);  color: var(--stealth-text); }
+  .badge-acquired { background: var(--acquired-bg); color: var(--acquired-text); }
+
+  .round {
+    font-size: 11px;
+    color: var(--accent);
+  }
+
+  /* ── company name link ── */
+  .company-name {
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .company-name:hover { color: var(--accent); }
+  .company-url {
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .company-url:hover { color: var(--text); }
+
+  /* ── event feed ── */
+  .event-list { display: flex; flex-direction: column; gap: 0; }
+  .event-row {
+    display: grid;
+    grid-template-columns: 90px 160px 130px 1fr 60px;
+    align-items: start;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+  }
+  .event-row:hover { background: var(--surface2); margin: 0 -12px; padding: 12px; }
+  .event-date { color: var(--muted); font-size: 12px; white-space: nowrap; }
+  .event-company { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .event-type {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .event-summary { color: var(--text); }
+  .event-tier {
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  /* ── investor matrix ── */
+  .matrix-wrap { overflow-x: auto; }
+  .matrix-table th:first-child,
+  .matrix-table td:first-child {
+    position: sticky;
+    left: 0;
+    background: var(--surface);
+    z-index: 1;
+    min-width: 160px;
+    max-width: 200px;
+  }
+  .matrix-table tr:hover td:first-child { background: var(--surface2); }
+  .matrix-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0.7;
+  }
+  .matrix-dot.lead { opacity: 1; width: 10px; height: 10px; }
+  .matrix-label {
+    font-size: 10px;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+
+  /* ── notice ── */
+  .notice {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  /* ── filter bar ── */
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+    font-family: inherit;
+    padding: 5px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover  { border-color: var(--muted); color: var(--text); }
+  .filter-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(201,168,100,0.08); }
+
+  /* ── detail table ── */
+  #detail-table td {
+    font-size: 12px;
+    line-height: 1.55;
+    vertical-align: top;
+    word-break: break-word;
+    white-space: normal;
+    padding: 12px;
+  }
+  #detail-table .company-col {
+    font-weight: 600;
+    color: var(--accent);
+    font-size: 12px;
+  }
+  #detail-table .company-col a {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+    text-decoration: none;
+    margin-top: 2px;
+    font-weight: 400;
+  }
+  #detail-table .company-col a:hover { color: var(--text); }
+
+  /* ── amount ── */
+  .amount { font-family: 'Courier New', monospace; font-size: 12px; color: var(--text); }
+  .dim    { color: var(--muted); }
+
+  /* ── review tab ── */
+  .review-subnav { display:flex; gap:0; border-bottom:1px solid var(--border); margin-bottom:28px; }
+  .sub-btn { background:none; border:none; color:var(--muted); font-size:12px; font-family:inherit; padding:8px 18px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all 0.15s; }
+  .sub-btn:hover { color:var(--text); }
+  .sub-btn.active { color:var(--text); border-bottom-color:var(--accent); }
+  .sub-pane { display:none; }
+  .sub-pane.active { display:block; }
+
+  .probe-panel { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:20px 24px; margin-bottom:32px; }
+  .probe-form { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
+  .probe-input { background:var(--surface2); border:1px solid var(--border); color:var(--text); font-size:13px; font-family:inherit; padding:7px 12px; border-radius:4px; flex:1; min-width:160px; outline:none; }
+  .probe-input:focus { border-color:var(--accent); }
+  .probe-run-btn { background:var(--accent); color:var(--bg); border:none; border-radius:4px; padding:7px 18px; font-size:13px; font-family:inherit; cursor:pointer; font-weight:500; white-space:nowrap; }
+  .probe-run-btn:disabled { opacity:0.5; cursor:not-allowed; }
+  #probe-status { margin-top:10px; font-size:12px; min-height:18px; }
+
+  .staging-section { margin-bottom:40px; }
+  .staging-card { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:14px 16px; margin-bottom:8px; }
+  .staging-card-header { display:flex; align-items:center; gap:10px; margin-bottom:9px; flex-wrap:wrap; }
+  .staging-company { font-weight:600; color:var(--accent); }
+  .staging-field { font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); background:var(--surface2); padding:2px 8px; border-radius:3px; }
+  .staging-diff { display:flex; align-items:flex-start; gap:10px; font-size:12px; margin-bottom:9px; }
+  .old-val { color:var(--muted); text-decoration:line-through; max-width:42%; word-break:break-word; }
+  .new-val { color:var(--active-text); max-width:52%; word-break:break-word; }
+  .diff-arrow { color:var(--muted); flex-shrink:0; padding-top:1px; }
+  .staging-source { font-size:11px; color:var(--muted); margin-bottom:9px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .staging-source a { color:var(--muted); text-decoration:none; }
+  .staging-source a:hover { color:var(--text); }
+  .staging-dup { font-size:10px; color:var(--muted); background:var(--surface2); padding:1px 6px; border-radius:2px; }
+  .staging-actions { display:flex; gap:8px; align-items:center; }
+  .btn-approve { background:rgba(45,90,45,.35); color:var(--active-text); border:1px solid rgba(111,207,111,.3); border-radius:4px; padding:4px 14px; font-size:12px; font-family:inherit; cursor:pointer; }
+  .btn-approve:hover { background:rgba(45,90,45,.6); }
+  .btn-reject { background:var(--surface2); color:var(--muted); border:1px solid var(--border); border-radius:4px; padding:4px 14px; font-size:12px; font-family:inherit; cursor:pointer; }
+  .btn-reject:hover { color:#e55; border-color:#e55; }
+  .bulk-bar { display:flex; gap:8px; margin-bottom:10px; align-items:center; flex-wrap:wrap; min-height:30px; }
+  .select-all-label { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); cursor:pointer; user-select:none; padding:3px 0; }
+  .select-all-label:hover { color:var(--text); }
+  .card-checkbox { width:15px; height:15px; accent-color:var(--accent); cursor:pointer; flex-shrink:0; }
+  .bulk-sep { width:1px; height:16px; background:var(--border); flex-shrink:0; }
+  .bulk-count { font-size:11px; color:var(--muted); min-width:72px; }
+  .btn-bulk-approve { background:rgba(45,90,45,.35); color:var(--active-text); border:1px solid rgba(111,207,111,.3); border-radius:4px; padding:4px 14px; font-size:12px; font-family:inherit; cursor:pointer; }
+  .btn-bulk-approve:disabled { opacity:.3; cursor:not-allowed; }
+  .btn-bulk-approve:not(:disabled):hover { background:rgba(45,90,45,.6); }
+  .btn-bulk-reject { background:var(--surface2); color:var(--muted); border:1px solid var(--border); border-radius:4px; padding:4px 14px; font-size:12px; font-family:inherit; cursor:pointer; }
+  .btn-bulk-reject:disabled { opacity:.3; cursor:not-allowed; }
+  .btn-bulk-reject:not(:disabled):hover { color:#e55; border-color:#e55; }
+  .staging-card.selected { border-color:rgba(201,168,100,.45); background:rgba(201,168,100,.04); }
+
+  .timeline-row { display:grid; grid-template-columns:90px 150px 70px 1fr; gap:14px; padding:11px 0; border-bottom:1px solid var(--border); align-items:center; cursor:pointer; }
+  .timeline-row:hover { background:var(--surface2); margin:0 -12px; padding:11px 12px; }
+  .timeline-detail { display:none; padding:10px 0 16px; border-bottom:1px solid var(--border); }
+  .timeline-detail.open { display:block; }
+  .detail-section { margin-bottom:10px; }
+  .detail-section-title { font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:6px; }
+  .detail-item { display:grid; grid-template-columns:130px 1fr 70px; gap:8px; font-size:12px; padding:4px 0; border-bottom:1px solid rgba(255,255,255,.03); align-items:start; }
+  .detail-item:last-child { border-bottom:none; }
+  .detail-company { color:var(--accent); font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .detail-desc { color:var(--text); }
+  .detail-status-approved { color:var(--active-text); font-size:11px; }
+  .detail-status-rejected  { color:var(--muted);       font-size:11px; text-decoration:line-through; }
+  .detail-status-pending   { color:var(--stealth-text); font-size:11px; }
+  .trig-badge { font-size:10px; text-transform:uppercase; letter-spacing:.05em; padding:2px 8px; border-radius:3px; display:inline-block; }
+  .trig-scan    { background:rgba(45,130,160,.2);  color:#7fc8e0; }
+  .trig-weekly  { background:rgba(90,45,180,.2);  color:#a07ff0; }
+  .trig-probe   { background:rgba(45,150,90,.2);  color:#7fd0a0; }
+  .trig-digest  { background:rgba(150,150,45,.2); color:#d0d07f; }
+
+  /* ── digests tab ── */
+  .digest-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+  .digest-card:hover { border-color: var(--muted); }
+  .digest-card-header { display:flex; align-items:center; gap:12px; }
+  .digest-type-badge {
+    font-size:10px; text-transform:uppercase; letter-spacing:.06em;
+    padding:2px 8px; border-radius:3px;
+  }
+  .digest-type-weekly   { background:rgba(90,45,180,.2);  color:#a07ff0; }
+  .digest-type-on_demand { background:rgba(201,168,100,.15); color:var(--accent); }
+  .digest-body {
+    display:none; margin-top:14px; border-top:1px solid var(--border); padding-top:14px;
+    font-size:12px; line-height:1.7; white-space:pre-wrap; color:var(--text);
+    font-family: 'Georgia', serif;
+  }
+  .digest-body.open { display:block; }
+  .digest-gen-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+  }
+  .digest-checkboxes {
+    display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 16px;
+  }
+  .digest-cb-label {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 4px; padding: 4px 10px;
+    font-size: 12px; color: var(--muted); cursor: pointer;
+    transition: border-color .15s, color .15s;
+  }
+  .digest-cb-label:has(input:checked) { border-color: var(--accent); color: var(--text); }
+  .digest-cb-label input { accent-color: var(--accent); }
+  #digest-output {
+    margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);
+    font-size: 12px; line-height: 1.7; white-space: pre-wrap; font-family: Georgia, serif;
+    display: none;
+  }
+  .ts-done    { color:var(--active-text); }
+  .ts-running { color:var(--stealth-text); }
+  .ts-error   { color:#e55; }
+  .run-trigger-row { display:flex; gap:12px; justify-content:flex-end; margin-bottom:20px; flex-wrap:wrap; }
+  .run-btn { background:var(--surface); border:1px solid var(--border); color:var(--muted); font-size:12px; font-family:inherit; padding:5px 14px; border-radius:4px; cursor:pointer; }
+  .run-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+  /* ── save banner ── */
+  #save-banner { display:none; position:fixed; bottom:24px; right:24px; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:12px 18px; z-index:200; align-items:center; gap:14px; box-shadow:0 4px 24px rgba(0,0,0,.4); }
+  #save-banner.show { display:flex; }
+  .save-reload-btn { background:var(--accent); color:var(--bg); border:none; border-radius:4px; padding:5px 14px; font-size:12px; font-family:inherit; cursor:pointer; font-weight:500; }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">Competitor Intel</span>
+  <div class="nav-tabs">
+    <button class="tab-btn active" data-tab="companies">Companies</button>
+    <button class="tab-btn" data-tab="events">Events</button>
+    <button class="tab-btn" data-tab="investors">Investors</button>
+    <button class="tab-btn" data-tab="digests">Digests</button>
+    <button class="tab-btn" data-tab="review">Review <span id="review-badge" style="display:none;background:var(--accent);color:var(--bg);border-radius:10px;font-size:10px;padding:1px 6px;margin-left:4px;vertical-align:middle"></span></button>
+  </div>
+  <span class="nav-right" id="generated-at"></span>
+</nav>
+
+<main>
+
+  <!-- ── COMPANIES ── -->
+  <div class="tab-pane active" id="tab-companies">
+    <h1>Tracked Companies</h1>
+    <p class="dim" style="margin-bottom:28px">Mining & subsurface AI startups under watch.</p>
+
+    <div class="stats" id="stats-row"></div>
+
+    <div class="filter-bar" id="status-filters">
+      <span style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em">Status</span>
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="active">Active</button>
+      <button class="filter-btn" data-filter="stealth">Stealth</button>
+      <button class="filter-btn" data-filter="acquired">Acquired</button>
+    </div>
+
+    <!-- summary table -->
+    <div class="table-wrap" style="margin-bottom:48px">
+      <table id="companies-table">
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Status</th>
+            <th>HQ</th>
+            <th>Founded</th>
+            <th>Round</th>
+            <th>Amount</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="companies-tbody"></tbody>
+      </table>
+    </div>
+
+    <!-- full detail table -->
+    <h2>Full Detail</h2>
+    <div class="table-wrap">
+      <table id="detail-table" style="table-layout:fixed;width:100%">
+        <colgroup>
+          <col style="width:130px">
+          <col style="width:220px">
+          <col style="width:260px">
+          <col style="width:180px">
+          <col style="width:200px">
+          <col style="width:260px">
+          <col style="width:280px">
+          <col style="width:180px">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Company</th>
+            <th>Business Model</th>
+            <th>Technical</th>
+            <th>Stage</th>
+            <th>Latest Round</th>
+            <th>Funding Trajectory</th>
+            <th>Investors</th>
+            <th>Valuation</th>
+          </tr>
+        </thead>
+        <tbody id="detail-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── EVENTS ── -->
+  <div class="tab-pane" id="tab-events">
+    <h1>Events</h1>
+    <p class="dim" style="margin-bottom:28px">Funding rounds, acquisitions, leadership changes — append-only log.</p>
+
+    <div class="filter-bar" id="type-filters">
+      <span style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em">Type</span>
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="funding_round">Funding</button>
+      <button class="filter-btn" data-filter="acquisition">Acquisition</button>
+      <button class="filter-btn" data-filter="leadership_change">Leadership</button>
+      <button class="filter-btn" data-filter="partnership">Partnership</button>
+      <button class="filter-btn" data-filter="customer_win">Customer</button>
+    </div>
+
+    <div class="event-list" id="events-list"></div>
+  </div>
+
+  <!-- ── INVESTORS ── -->
+  <div class="tab-pane" id="tab-investors">
+    <h1>Investor Map</h1>
+    <p class="dim" style="margin-bottom:28px">Investors × portfolio companies. Filled dot = lead, outline = follow.</p>
+    <div class="matrix-wrap">
+      <table class="matrix-table" id="investor-table">
+        <thead><tr id="investor-header"></tr></thead>
+        <tbody id="investor-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── DIGESTS ── -->
+  <div class="tab-pane" id="tab-digests">
+    <h1>Digests</h1>
+    <p class="dim" style="margin-bottom:28px">Weekly intelligence summaries and on-demand comparative analysis.</p>
+
+    <!-- on-demand generator (only shown when review_server.py is running) -->
+    <div class="digest-gen-panel" id="digest-gen-panel" style="display:none">
+      <h2 style="margin-top:0">Generate On-Demand Digest</h2>
+      <p class="dim" style="font-size:12px;margin-bottom:4px">Select companies to compare (or leave all unchecked for full weekly):</p>
+      <div class="digest-checkboxes" id="digest-checkboxes"></div>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <button class="probe-run-btn" id="digest-gen-btn" onclick="generateDigest()">Generate</button>
+        <button class="run-btn" onclick="toggleAllDigestCbs(false)" style="font-size:11px;padding:4px 10px">Clear</button>
+        <button class="run-btn" onclick="toggleAllDigestCbs(true)"  style="font-size:11px;padding:4px 10px">Select All</button>
+        <span id="digest-gen-status" class="dim" style="font-size:12px"></span>
+      </div>
+      <div id="digest-output"></div>
+    </div>
+
+    <!-- digest list from data.json -->
+    <div id="digest-list">
+      <div class="notice">No digests yet — run: <code style="background:var(--surface2);padding:2px 8px;border-radius:3px">python pipeline.py digest</code></div>
+    </div>
+  </div>
+
+  <!-- ── REVIEW ── -->
+  <div class="tab-pane" id="tab-review">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:8px">
+      <h1 style="margin-bottom:0">Review</h1>
+      <button class="run-btn" id="refresh-data-btn" onclick="reloadAllData()" style="font-size:12px;padding:6px 16px;border-color:var(--muted)">↻ Refresh Data</button>
+    </div>
+    <p class="dim" style="margin-bottom:20px">Approve staged items below to commit them to the final database.</p>
+
+    <div class="review-subnav">
+      <button class="sub-btn active" data-sub="staging">Staging</button>
+      <button class="sub-btn"        data-sub="timeline">History</button>
+    </div>
+
+    <!-- staging view -->
+    <div class="sub-pane active" id="sub-staging">
+
+      <!-- pipeline run controls -->
+      <div class="run-trigger-row" style="justify-content:flex-start;margin-bottom:20px">
+        <span style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:5px 0;align-self:center">Run</span>
+        <button class="run-btn" onclick="triggerRun('scan')">Scan sources</button>
+        <button class="run-btn" onclick="triggerRun('weekly')">Weekly scrape</button>
+        <button class="run-btn" onclick="triggerRun('digest')">Generate digest</button>
+        <button class="run-btn" onclick="reloadStagingAndData()" style="margin-left:auto">↻ Refresh</button>
+      </div>
+      <div id="run-status" style="font-size:12px;color:var(--muted);min-height:18px;margin-bottom:16px"></div>
+
+      <div class="probe-panel">
+        <h2 style="margin-top:0">Add Company</h2>
+        <div class="probe-form">
+          <input class="probe-input" id="probe-company" type="text" placeholder="Company name (required)">
+          <input class="probe-input" id="probe-website"  type="text" placeholder="Website URL (optional)">
+          <button class="probe-run-btn" id="probe-btn">Run Probe</button>
+        </div>
+        <div id="probe-status"></div>
+      </div>
+
+      <div id="staging-content">
+        <div class="notice" style="margin-top:0">Loading staging data…</div>
+      </div>
+    </div>
+
+    <!-- timeline view -->
+    <div class="sub-pane" id="sub-timeline">
+      <div id="timeline-content">
+        <div class="notice" style="margin-top:0">Loading pipeline history…</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- save banner -->
+<div id="save-banner">
+  <span style="color:var(--active-text);font-size:13px">✓ Changes saved to DB</span>
+  <button class="save-reload-btn" onclick="location.reload()">Refresh View</button>
+</div>
+
+<script>
+// ── helpers ──────────────────────────────────────────────────────────────────
+
+function fmtUSD(v) {
+  if (!v) return '—';
+  v = parseFloat(v);
+  if (v >= 1e9) return '$' + (v/1e9).toFixed(1) + 'B';
+  if (v >= 1e6) return '$' + (v/1e6).toFixed(1) + 'M';
+  if (v >= 1e3) return '$' + (v/1e3).toFixed(0) + 'K';
+  return '$' + v.toFixed(0);
+}
+
+function badge(status) {
+  const cls = { active: 'badge-active', stealth: 'badge-stealth', acquired: 'badge-acquired' }[status] || 'badge-active';
+  return `<span class="badge ${cls}">${status}</span>`;
+}
+
+function fmtRound(t) {
+  if (!t) return '—';
+  return `<span class="round">${t.replace(/_/g,' ')}</span>`;
+}
+
+function fmtPayload(type, payload) {
+  if (!payload) return '';
+  if (type === 'funding_round') {
+    const r = payload.round_type || '';
+    const a = fmtUSD(payload.amount_usd);
+    const inv = (payload.lead_investors || []).join(', ');
+    return `${r} · ${a}${inv ? ' · ' + inv : ''}`;
+  }
+  if (type === 'acquisition')      return `Acquired by ${payload.acquirer_name || payload.target_name || '?'}`;
+  if (type === 'leadership_change') return `${payload.person_name || '?'} — ${payload.change_type || '?'}`;
+  if (type === 'partnership')       return `Partner: ${payload.partner_name || '?'}`;
+  if (type === 'customer_win')      return `Customer: ${payload.customer_name || '?'}`;
+  if (type === 'product_launch')    return `Product: ${payload.product_name || '?'}`;
+  return JSON.stringify(payload).slice(0, 80);
+}
+
+// ── tabs ─────────────────────────────────────────────────────────────────────
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'review' && !_reviewReady) initReviewTab();
+    if (['companies','events','investors','digests'].includes(btn.dataset.tab) && window._appData) {
+      const d = window._appData;
+      if (btn.dataset.tab === 'companies')  renderCompanies(d.companies || []);
+      if (btn.dataset.tab === 'events')     renderEvents(d.events || []);
+      if (btn.dataset.tab === 'investors')  renderInvestors(d.investors || []);
+      if (btn.dataset.tab === 'digests')    renderDigests(d.digests || [], d.companies || []);
+    }
+  });
+});
+
+// ── render ───────────────────────────────────────────────────────────────────
+
+function renderStats(stats) {
+  const items = [
+    { value: stats.total,    label: 'Tracked' },
+    { value: stats.active,   label: 'Active' },
+    { value: stats.stealth,  label: 'Stealth' },
+    { value: stats.acquired, label: 'Acquired' },
+  ];
+  if (stats.conflicts_pending)  items.push({ value: stats.conflicts_pending,  label: 'Conflicts' });
+  if (stats.candidates_pending) items.push({ value: stats.candidates_pending, label: 'New candidates' });
+
+  document.getElementById('stats-row').innerHTML = items.map(i =>
+    `<div class="stat"><div class="stat-value">${i.value}</div><div class="stat-label">${i.label}</div></div>`
+  ).join('');
+}
+
+function renderCompanies(companies) {
+  let filter = 'all';
+
+  function draw() {
+    const rows = filter === 'all' ? companies : companies.filter(c => c.status === filter);
+
+    // summary table
+    document.getElementById('companies-tbody').innerHTML = rows.map(c => `
+      <tr>
+        <td>
+          <div><a class="company-name" href="${c.website||'#'}" target="_blank">${c.canonical_name}</a></div>
+          ${c.website ? `<a class="company-url" href="${c.website}" target="_blank">${c.website.replace(/^https?:\/\/(www\.)?/,'').split('/')[0]}</a>` : ''}
+        </td>
+        <td>${badge(c.status || 'active')}</td>
+        <td class="dim">${[c.hq_city, c.hq_country].filter(Boolean).join(', ') || '—'}</td>
+        <td class="dim">${c.founded_year || '—'}</td>
+        <td>${fmtRound(c.latest_round_type)}</td>
+        <td class="amount">${fmtUSD(c.latest_round_amount_usd)}</td>
+        <td class="dim">${c.latest_round_date ? c.latest_round_date.slice(0,7) : '—'}</td>
+      </tr>
+    `).join('');
+
+    // detail table
+    document.getElementById('detail-tbody').innerHTML = rows.map(c => `
+      <tr>
+        <td class="company-col">
+          ${c.canonical_name}
+          ${c.website ? `<a href="${c.website}" target="_blank">${c.website.replace(/^https?:\/\/(www\.)?/,'').split('/')[0]}</a>` : ''}
+        </td>
+        <td>${c.business_model_summary || '<span class="dim">—</span>'}</td>
+        <td>${c.technical || '<span class="dim">—</span>'}</td>
+        <td>${c.stage_description || '<span class="dim">—</span>'}</td>
+        <td>${c.latest_round_text || '<span class="dim">—</span>'}</td>
+        <td>${c.funding_trajectory || '<span class="dim">—</span>'}</td>
+        <td>${c.investors_text || '<span class="dim">—</span>'}</td>
+        <td>${c.valuation || '<span class="dim">—</span>'}</td>
+      </tr>
+    `).join('');
+  }
+
+  draw();
+
+  document.querySelectorAll('#status-filters .filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#status-filters .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filter = btn.dataset.filter;
+      draw();
+    });
+  });
+}
+
+function renderEvents(events) {
+  let filter = 'all';
+  const sorted = [...events].sort((a, b) => (b.event_date||'').localeCompare(a.event_date||''));
+
+  function draw() {
+    const rows = filter === 'all' ? sorted : sorted.filter(e => e.event_type === filter);
+    if (!rows.length) {
+      document.getElementById('events-list').innerHTML = '<div class="notice">No events for this filter.</div>';
+      return;
+    }
+    document.getElementById('events-list').innerHTML = rows.map(e => `
+      <div class="event-row">
+        <span class="event-date">${e.event_date||'—'}</span>
+        <span class="event-company">${e.canonical_name||'—'}</span>
+        <span class="event-type">${(e.event_type||'').replace(/_/g,' ')}</span>
+        <span class="event-summary">${fmtPayload(e.event_type, e.payload)}</span>
+        <span class="event-tier dim">tier ${e.source_tier||'?'}</span>
+      </div>
+    `).join('');
+  }
+
+  draw();
+
+  document.querySelectorAll('#type-filters .filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#type-filters .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filter = btn.dataset.filter;
+      draw();
+    });
+  });
+}
+
+function renderInvestors(investors) {
+  // build matrix: rows = investors, cols = companies
+  const invSet = [...new Set(investors.map(r => r.investor))].sort();
+  const compSet = [...new Set(investors.map(r => r.company))].sort();
+
+  const lookup = {};
+  investors.forEach(r => { lookup[`${r.investor}|${r.company}`] = r.relation_subtype || 'follow'; });
+
+  document.getElementById('investor-header').innerHTML =
+    '<th>Investor</th>' + compSet.map(c => `<th style="font-size:10px;max-width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c}</th>`).join('');
+
+  document.getElementById('investor-tbody').innerHTML = invSet.map(inv => {
+    const cols = compSet.map(comp => {
+      const role = lookup[`${inv}|${comp}`];
+      if (!role) return '<td></td>';
+      const cls = role === 'lead' ? 'lead' : '';
+      return `<td style="text-align:center"><span class="matrix-dot ${cls}" title="${role}"></span></td>`;
+    }).join('');
+    return `<tr><td>${inv}</td>${cols}</tr>`;
+  }).join('');
+}
+
+// ── Review Tab ────────────────────────────────────────────────────────────────
+
+let _reviewReady = false;
+
+async function initReviewTab() {
+  _reviewReady = true;
+  try {
+    const r = await fetch('/api/staging');
+    if (!r.ok) throw new Error('offline');
+    renderStagingData(await r.json());
+  } catch {
+    const offline = `<div class="notice" style="margin-top:0">
+      <div style="margin-bottom:12px">Review server not running.</div>
+      <code style="background:var(--surface2);padding:8px 16px;border-radius:4px;display:inline-block">python review_server.py</code>
+    </div>`;
+    document.getElementById('staging-content').innerHTML = offline;
+    document.getElementById('timeline-content').innerHTML = offline;
+    _reviewReady = false;
+  }
+}
+
+function _fmtVal(v) {
+  if (v === null || v === undefined || v === 'null' || v === '') return '<span class="dim">—</span>';
+  const s = String(v);
+  return s.length > 100 ? s.slice(0, 100) + '…' : s;
+}
+
+function _bulkBar(type, label) {
+  return `<div class="bulk-bar">
+    <label class="select-all-label">
+      <input type="checkbox" class="card-checkbox select-all-cb" data-type="${type}"
+             onchange="toggleSelectAll('${type}', this)">
+      ${label}
+    </label>
+    <span class="bulk-sep"></span>
+    <span class="bulk-count" id="sel-count-${type}"></span>
+    <button class="btn-bulk-approve" id="bulk-approve-${type}" disabled
+            onclick="bulkAction('${type}','approve')">Approve Selected</button>
+    <button class="btn-bulk-reject"  id="bulk-reject-${type}"  disabled
+            onclick="bulkAction('${type}','reject')">Reject Selected</button>
+  </div>`;
+}
+
+function renderStagingData(data) {
+  const { updates = [], events = [], candidates = [] } = data;
+  const total = updates.length + events.length + candidates.length;
+  const badge = document.getElementById('review-badge');
+  if (total > 0) { badge.textContent = total; badge.style.display = 'inline'; }
+  else badge.style.display = 'none';
+
+  let html = '';
+
+  if (updates.length) {
+    html += `<div class="staging-section">
+      <h2>Company Field Updates (${updates.length})</h2>
+      ${_bulkBar('updates', 'Select all')}`;
+    updates.forEach(u => {
+      html += `<div class="staging-card" id="card-updates-${u.id}">
+        <div class="staging-card-header">
+          <input type="checkbox" class="card-checkbox item-cb" data-type="updates" data-id="${u.id}"
+                 onchange="onCheckChange('updates')">
+          <span class="staging-company">${u.company_name || '—'}</span>
+          <span class="staging-field">${u.field_name}</span>
+          <span class="dim" style="font-size:11px">conf ${Math.round((u.confidence||0)*100)}%</span>
+        </div>
+        <div class="staging-diff">
+          <span class="old-val">${_fmtVal(u.old_value)}</span>
+          <span class="diff-arrow">→</span>
+          <span class="new-val">${_fmtVal(u.new_value)}</span>
+        </div>
+        ${u.source_url ? `<div class="staging-source">via <a href="${u.source_url}" target="_blank">${u.source_url.slice(0,80)}</a></div>` : ''}
+        <div class="staging-actions">
+          <button class="btn-approve" onclick="reviewAction('updates','${u.id}','approve')">Approve</button>
+          <button class="btn-reject"  onclick="reviewAction('updates','${u.id}','reject')">Reject</button>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (events.length) {
+    html += `<div class="staging-section">
+      <h2>New Events (${events.length})</h2>
+      ${_bulkBar('events', 'Select all')}`;
+    events.forEach(e => {
+      let pl = {};
+      try { pl = typeof e.payload === 'string' ? JSON.parse(e.payload) : (e.payload || {}); } catch {}
+      html += `<div class="staging-card" id="card-events-${e.id}">
+        <div class="staging-card-header">
+          <input type="checkbox" class="card-checkbox item-cb" data-type="events" data-id="${e.id}"
+                 onchange="onCheckChange('events')">
+          <span class="staging-company">${e.company_name || '—'}</span>
+          <span class="staging-field">${(e.event_type||'').replace(/_/g,' ')}</span>
+          <span class="dim">${e.event_date || ''}</span>
+          ${e.is_duplicate ? '<span class="staging-dup">already in DB</span>' : ''}
+        </div>
+        <div style="font-size:12px;margin-bottom:9px">${fmtPayload(e.event_type, pl)}</div>
+        ${e.source_url ? `<div class="staging-source">via <a href="${e.source_url}" target="_blank">${e.source_url.slice(0,80)}</a></div>` : ''}
+        <div class="staging-actions">
+          ${!e.is_duplicate
+            ? `<button class="btn-approve" onclick="reviewAction('events','${e.id}','approve')">Approve</button>`
+            : `<span class="dim" style="font-size:11px">duplicate — skip or reject</span>`}
+          <button class="btn-reject" onclick="reviewAction('events','${e.id}','reject')">Reject</button>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (candidates.length) {
+    html += `<div class="staging-section">
+      <h2>New Competitor Candidates (${candidates.length})</h2>
+      ${_bulkBar('candidates', 'Select all')}`;
+    candidates.forEach(c => {
+      html += `<div class="staging-card" id="card-candidates-${c.id}">
+        <div class="staging-card-header">
+          <input type="checkbox" class="card-checkbox item-cb" data-type="candidates" data-id="${c.id}"
+                 onchange="onCheckChange('candidates')">
+          <span class="staging-company">${c.discovered_name}</span>
+          ${c.discovered_url ? `<a class="company-url" href="${c.discovered_url}" target="_blank">${c.discovered_url.slice(0,50)}</a>` : ''}
+        </div>
+        ${c.discovery_reason ? `<div style="font-size:12px;color:var(--muted);margin-bottom:9px">${c.discovery_reason}</div>` : ''}
+        ${c.discovery_source ? `<div class="staging-source">via <a href="${c.discovery_source}" target="_blank">${c.discovery_source.slice(0,60)}</a></div>` : ''}
+        <div class="staging-actions">
+          <button class="btn-approve" onclick="reviewAction('candidates','${c.id}','approve')">Add to Tracking</button>
+          <button class="btn-reject"  onclick="reviewAction('candidates','${c.id}','reject')">Reject</button>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (!html) html = '<div class="notice" style="margin-top:0">No pending items — all caught up!</div>';
+  document.getElementById('staging-content').innerHTML = html;
+}
+
+async function reviewAction(type, id, action) {
+  const card = document.getElementById(`card-${type}-${id}`);
+  if (card) card.style.opacity = '0.4';
+  try {
+    const r = await fetch(`/api/staging/${type}/${id}/${action}`, { method: 'POST' });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    if (card) card.remove();
+    if (action === 'approve') {
+      document.getElementById('save-banner').classList.add('show');
+      // re-fetch stats immediately so Companies tab badge updates
+      reloadAllData();
+    }
+  } catch (err) {
+    if (card) card.style.opacity = '1';
+    alert('Error: ' + err.message);
+  }
+}
+
+async function reloadAllData() {
+  try {
+    const r = await fetch('/data.json?' + Date.now()); // cache-bust
+    if (!r.ok) return;
+    const data = await r.json();
+    document.getElementById('generated-at').textContent = 'Updated ' + data.generated_at;
+    renderStats(data.stats);
+    // update currently visible tab tables without resetting filters
+    const activeTab = document.querySelector('.tab-pane.active');
+    if (activeTab && activeTab.id === 'tab-companies')  renderCompanies(data.companies || []);
+    else if (activeTab && activeTab.id === 'tab-events')    renderEvents(data.events || []);
+    else if (activeTab && activeTab.id === 'tab-investors') renderInvestors(data.investors || []);
+    else if (activeTab && activeTab.id === 'tab-digests')   renderDigests(data.digests || [], data.companies || []);
+    // store for other tabs
+    window._appData = data;
+  } catch {}
+}
+
+// ── Digests Tab ───────────────────────────────────────────────────────────────
+
+function renderDigests(digests, companies) {
+  // populate company checkboxes for on-demand generator
+  const cbWrap = document.getElementById('digest-checkboxes');
+  if (cbWrap && companies) {
+    cbWrap.innerHTML = companies.map(c => `
+      <label class="digest-cb-label">
+        <input type="checkbox" value="${c.id}" name="digest-company">
+        ${c.canonical_name}
+      </label>
+    `).join('');
+  }
+
+  const list = document.getElementById('digest-list');
+  if (!digests || !digests.length) {
+    list.innerHTML = '<div class="notice">No digests yet — run: <code style="background:var(--surface2);padding:2px 8px;border-radius:3px">python pipeline.py digest</code></div>';
+    return;
+  }
+
+  list.innerHTML = digests.map((d, i) => {
+    const typeLabel = d.digest_type === 'on_demand' ? 'on demand' : d.digest_type || 'weekly';
+    const typeClass = d.digest_type === 'on_demand' ? 'digest-type-on_demand' : 'digest-type-weekly';
+    const date = (d.created_at || '').slice(0, 16).replace('T', ' ');
+    return `<div class="digest-card" onclick="toggleDigest(${i})">
+      <div class="digest-card-header">
+        <span class="digest-type-badge ${typeClass}">${typeLabel}</span>
+        <span style="color:var(--text);font-size:13px">${d.content ? d.content.split('\n')[0].replace(/^#+\s*/,'') : 'Digest'}</span>
+        <span class="dim" style="font-size:11px;margin-left:auto">${date}</span>
+      </div>
+      <div class="digest-body" id="digest-body-${i}">${escHtml(d.content || '')}</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleDigest(i) {
+  document.getElementById(`digest-body-${i}`)?.classList.toggle('open');
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function toggleAllDigestCbs(checked) {
+  document.querySelectorAll('input[name="digest-company"]').forEach(cb => cb.checked = checked);
+}
+
+async function generateDigest() {
+  const cbs = [...document.querySelectorAll('input[name="digest-company"]:checked')];
+  const company_ids = cbs.length ? cbs.map(cb => cb.value) : null;
+
+  const btn = document.getElementById('digest-gen-btn');
+  const status = document.getElementById('digest-gen-status');
+  const output = document.getElementById('digest-output');
+  btn.disabled = true;
+  btn.textContent = 'Generating…';
+  status.textContent = 'Calling LLM — this takes ~30 s…';
+  output.style.display = 'none';
+
+  try {
+    const r = await fetch('/api/digest', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ company_ids }),
+    });
+    if (!r.ok) throw new Error('review server offline');
+    const { job_id } = await r.json();
+
+    const poll = setInterval(async () => {
+      const jr = await fetch(`/api/digest/${job_id}`);
+      const jd = await jr.json();
+      if (jd.status === 'done') {
+        clearInterval(poll);
+        btn.disabled = false; btn.textContent = 'Generate';
+        status.textContent = '✓ Done';
+        output.textContent = jd.content || '';
+        output.style.display = 'block';
+        // refresh digest list
+        const dr = await fetch('/data.json?' + Date.now());
+        if (dr.ok) {
+          const data = await dr.json();
+          window._appData = data;
+          renderDigests(data.digests || [], data.companies || []);
+        }
+      } else if (jd.status === 'error') {
+        clearInterval(poll);
+        btn.disabled = false; btn.textContent = 'Generate';
+        status.textContent = 'Error: ' + jd.error;
+      }
+    }, 3000);
+  } catch (err) {
+    btn.disabled = false; btn.textContent = 'Generate';
+    status.textContent = err.message + ' — is review_server.py running?';
+  }
+}
+
+// check if review server is running → show generator panel
+fetch('/api/staging').then(r => {
+  if (r.ok) document.getElementById('digest-gen-panel').style.display = 'block';
+}).catch(() => {});
+
+// ── selection helpers ─────────────────────────────────────────────────────────
+
+function onCheckChange(type) {
+  const all     = [...document.querySelectorAll(`.item-cb[data-type="${type}"]`)];
+  const checked = all.filter(cb => cb.checked);
+
+  // sync select-all checkbox state
+  const selectAll = document.querySelector(`.select-all-cb[data-type="${type}"]`);
+  if (selectAll) {
+    selectAll.indeterminate = checked.length > 0 && checked.length < all.length;
+    selectAll.checked = all.length > 0 && checked.length === all.length;
+  }
+
+  // label
+  const countEl = document.getElementById(`sel-count-${type}`);
+  if (countEl) countEl.textContent = checked.length > 0 ? `${checked.length} selected` : '';
+
+  // enable/disable bulk buttons
+  const off = checked.length === 0;
+  document.getElementById(`bulk-approve-${type}`)?.toggleAttribute('disabled', off);
+  document.getElementById(`bulk-reject-${type}`)?.toggleAttribute('disabled', off);
+
+  // highlight cards
+  all.forEach(cb => {
+    document.getElementById(`card-${type}-${cb.dataset.id}`)
+      ?.classList.toggle('selected', cb.checked);
+  });
+}
+
+function toggleSelectAll(type, masterCb) {
+  document.querySelectorAll(`.item-cb[data-type="${type}"]`).forEach(cb => {
+    cb.checked = masterCb.checked;
+  });
+  onCheckChange(type);
+}
+
+async function bulkAction(type, action) {
+  const checked = [...document.querySelectorAll(`.item-cb[data-type="${type}"]:checked`)];
+  if (!checked.length) return;
+
+  // lock buttons while running
+  ['approve','reject'].forEach(a => {
+    document.getElementById(`bulk-${a}-${type}`)?.setAttribute('disabled', '');
+  });
+
+  for (const cb of checked) {
+    // never approve duplicate events
+    if (action === 'approve' && type === 'events') {
+      const card = document.getElementById(`card-events-${cb.dataset.id}`);
+      if (card?.querySelector('.staging-dup')) continue;
+    }
+    await reviewAction(type, cb.dataset.id, action);
+  }
+  onCheckChange(type);
+}
+
+// ── sub-tab switching ─────────────────────────────────────────────────────────
+
+document.querySelectorAll('.sub-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.sub-pane').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('sub-' + btn.dataset.sub).classList.add('active');
+    if (btn.dataset.sub === 'timeline') loadTimeline();
+  });
+});
+
+// ── Timeline ──────────────────────────────────────────────────────────────────
+
+async function loadTimeline() {
+  try {
+    const r = await fetch('/api/staging/runs');
+    if (!r.ok) throw new Error('offline');
+    renderTimeline(await r.json());
+  } catch {
+    document.getElementById('timeline-content').innerHTML =
+      '<div class="notice" style="margin-top:0">Could not load history.</div>';
+  }
+}
+
+function renderTimeline(runs) {
+  if (!runs.length) {
+    document.getElementById('timeline-content').innerHTML =
+      '<div class="notice" style="margin-top:0">No pipeline runs yet.</div>';
+    return;
+  }
+
+  const rows = runs.map(r => {
+    const c = r.counts || {};
+    const total = (c.updates||0) + (c.events||0) + (c.candidates||0);
+    const summary = total
+      ? [c.updates&&`${c.updates} updates`, c.events&&`${c.events} events`, c.candidates&&`${c.candidates} candidates`].filter(Boolean).join(' · ')
+      : 'nothing staged';
+    return `
+      <div class="timeline-row" onclick="toggleRunDetail('${r.id}')">
+        <span><span class="trig-badge trig-${r.trigger}">${r.trigger}</span></span>
+        <span class="dim" style="font-size:12px">${(r.started_at||'').slice(0,16).replace('T',' ')}</span>
+        <span class="ts-${r.status}">${r.status}</span>
+        <span class="dim" style="font-size:12px">${summary}</span>
+      </div>
+      <div class="timeline-detail" id="detail-${r.id}">
+        <div class="dim" style="font-size:11px;padding:8px 0">Loading…</div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('timeline-content').innerHTML =
+    rows || '<div class="notice" style="margin-top:0">No runs yet.</div>';
+}
+
+async function toggleRunDetail(runId) {
+  const el = document.getElementById(`detail-${runId}`);
+  if (!el) return;
+  const isOpen = el.classList.contains('open');
+  el.classList.toggle('open');
+  if (isOpen) return;  // collapsing — no fetch needed
+
+  try {
+    const r = await fetch(`/api/staging/runs/${runId}`);
+    if (!r.ok) throw new Error('failed');
+    const { updates = [], events = [], candidates = [] } = await r.json();
+    el.innerHTML = renderRunDetail(updates, events, candidates);
+  } catch {
+    el.innerHTML = '<div class="dim" style="font-size:12px;padding:6px 0">Could not load detail.</div>';
+  }
+}
+
+function _statusBadge(s) {
+  return `<span class="detail-status-${s}">${s}</span>`;
+}
+
+function renderRunDetail(updates, events, candidates) {
+  let html = '';
+
+  if (updates.length) {
+    html += `<div class="detail-section">
+      <div class="detail-section-title">Field Updates (${updates.length})</div>`;
+    updates.forEach(u => {
+      const oldV = u.old_value ?? '—';
+      const newV = u.new_value ?? '—';
+      html += `<div class="detail-item">
+        <span class="detail-company">${u.company_name||'—'}</span>
+        <span class="detail-desc">
+          <span style="color:var(--muted);text-decoration:line-through">${String(oldV).slice(0,50)}</span>
+          <span style="color:var(--muted)"> → </span>
+          <span>${String(newV).slice(0,80)}</span>
+          ${u.source_url ? `<span class="dim"> · <a href="${u.source_url}" target="_blank" style="color:var(--muted)">${u.source_url.replace(/^https?:\/\//,'').slice(0,40)}</a></span>` : ''}
+        </span>
+        ${_statusBadge(u.status)}
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (events.length) {
+    html += `<div class="detail-section">
+      <div class="detail-section-title">Events (${events.length})</div>`;
+    events.forEach(e => {
+      let pl = {};
+      try { pl = typeof e.payload === 'string' ? JSON.parse(e.payload) : (e.payload||{}); } catch {}
+      const desc = fmtPayload(e.event_type, pl) || (e.event_type||'').replace(/_/g,' ');
+      html += `<div class="detail-item">
+        <span class="detail-company">${e.company_name||'—'}</span>
+        <span class="detail-desc">
+          <span style="color:var(--muted);font-size:11px;text-transform:uppercase">${(e.event_type||'').replace(/_/g,' ')}</span>
+          ${e.event_date ? `<span class="dim"> · ${e.event_date}</span>` : ''}
+          ${desc ? ` · ${desc}` : ''}
+          ${e.is_duplicate ? ' <span class="staging-dup">dup</span>' : ''}
+        </span>
+        ${_statusBadge(e.status)}
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (candidates.length) {
+    html += `<div class="detail-section">
+      <div class="detail-section-title">Candidate Companies (${candidates.length})</div>`;
+    candidates.forEach(c => {
+      html += `<div class="detail-item">
+        <span class="detail-company">${c.discovered_name}</span>
+        <span class="detail-desc">
+          ${c.discovered_url ? `<a href="${c.discovered_url}" target="_blank" style="color:var(--muted)">${c.discovered_url.replace(/^https?:\/\//,'').slice(0,40)}</a>` : ''}
+          ${c.discovery_reason ? `<span class="dim"> · ${c.discovery_reason.slice(0,80)}</span>` : ''}
+        </span>
+        ${_statusBadge(c.status)}
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  if (!html) html = '<div class="dim" style="font-size:12px;padding:6px 0">Nothing was staged in this run.</div>';
+  return html;
+}
+
+async function reloadStagingAndData() {
+  reloadAllData();
+  try {
+    const r = await fetch('/api/staging');
+    if (r.ok) renderStagingData(await r.json());
+  } catch {}
+}
+
+async function triggerRun(trigger) {
+  const statusEl = document.getElementById('run-status');
+  try {
+    const r = await fetch('/api/run', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ trigger }),
+    });
+    if (!r.ok) throw new Error('server offline');
+    const { job_id } = await r.json();
+    if (statusEl) statusEl.textContent = `Running ${trigger}… (job ${job_id})`;
+    const poll = setInterval(async () => {
+      const jr = await fetch(`/api/run/${job_id}`);
+      const jd = await jr.json();
+      if (jd.status !== 'running') {
+        clearInterval(poll);
+        if (statusEl) statusEl.textContent = `${trigger} ${jd.status} ✓`;
+        reloadStagingAndData();
+        loadTimeline();  // refresh timeline record
+      }
+    }, 5000);
+  } catch (err) {
+    if (statusEl) statusEl.textContent = err.message + ' — is review_server.py running?';
+  }
+}
+
+// ── Probe form ────────────────────────────────────────────────────────────────
+
+document.getElementById('probe-btn').addEventListener('click', async () => {
+  const company = document.getElementById('probe-company').value.trim();
+  const website = document.getElementById('probe-website').value.trim();
+  if (!company) { document.getElementById('probe-company').focus(); return; }
+
+  const btn = document.getElementById('probe-btn');
+  btn.disabled = true;
+  btn.textContent = 'Running…';
+  document.getElementById('probe-status').innerHTML =
+    '<span class="dim">Scraping & analysing — typically 20–40 s…</span>';
+
+  try {
+    const r = await fetch('/api/probe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ company, website: website || null }),
+    });
+    if (!r.ok) throw new Error('Review server offline');
+    const { job_id } = await r.json();
+
+    const poll = setInterval(async () => {
+      const jr = await fetch(`/api/probe/${job_id}`);
+      const jd = await jr.json();
+      if (jd.status === 'done') {
+        clearInterval(poll);
+        btn.disabled = false; btn.textContent = 'Run Probe';
+        const matchMsg = jd.matched_id
+          ? `Matched existing company (${Math.round((jd.confidence||0)*100)}% confidence)`
+          : 'No match — new candidate staged';
+        document.getElementById('probe-status').innerHTML =
+          `<span style="color:var(--active-text)">✓ Done · ${matchMsg} · Refreshing staging…</span>`;
+        document.getElementById('probe-company').value = '';
+        document.getElementById('probe-website').value  = '';
+        const sr = await fetch('/api/staging');
+        renderStagingData(await sr.json());
+      } else if (jd.status === 'error') {
+        clearInterval(poll);
+        btn.disabled = false; btn.textContent = 'Run Probe';
+        document.getElementById('probe-status').innerHTML =
+          `<span style="color:#e55">Error: ${jd.error}</span>`;
+      }
+    }, 2500);
+  } catch (err) {
+    btn.disabled = false; btn.textContent = 'Run Probe';
+    document.getElementById('probe-status').innerHTML =
+      `<span style="color:#e55">${err.message} — is review_server.py running?</span>`;
+  }
+});
+
+// ── load data ─────────────────────────────────────────────────────────────────
+
+fetch('data.json')
+  .then(r => {
+    if (!r.ok) throw new Error('data.json not found — run: python export.py');
+    return r.json();
+  })
+  .then(data => {
+    window._appData = data;
+    document.getElementById('generated-at').textContent = 'Updated ' + data.generated_at;
+    renderStats(data.stats);
+    renderCompanies(data.companies || []);
+    renderEvents(data.events || []);
+    renderInvestors(data.investors || []);
+    renderDigests(data.digests || [], data.companies || []);
+  })
+  .catch(err => {
+    document.querySelector('main').innerHTML =
+      `<div class="notice" style="margin-top:80px">
+        <div style="font-family:Georgia,serif;font-size:18px;color:var(--text);margin-bottom:12px">No data found</div>
+        <div style="margin-bottom:8px">Run the setup commands first:</div>
+        <code style="background:var(--surface2);padding:8px 16px;border-radius:4px;display:inline-block">
+          python pipeline.py seed &amp;&amp; python export.py
+        </code>
+      </div>`;
+  });
+</script>
+</body>
+</html>
