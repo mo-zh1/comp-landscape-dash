@@ -200,6 +200,10 @@ The `scan` stage hits 7 sources weekly. Serper-dependent sources require `SERPER
 
 - [ ] **Migrate to a cloud database for live dashboard interactivity** — the current architecture writes `data.json` to the repo on each CI run and serves it as a static file; the dashboard has no write path from the browser. Migrating to a hosted Postgres instance (e.g. Supabase) would enable: real-time data without a CI commit round-trip, the review/approval workflow running against the live DB from any browser (removing the dependency on `review_server.py` running locally), row-level security for multi-user access, and a stable API surface for future integrations. The placeholders `SUPABASE_URL` / `SUPABASE_KEY` in `core/config.py` mark where the `core/db.py` SQLite adapter would be swapped out.
 
+### Model
+- [ ] **Add prompt chache to save cost** 
+- [ ] **Add function calling to constrain the output format** 
+
 ---
 
 ## API Keys
