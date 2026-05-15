@@ -60,9 +60,23 @@ def _export():
 
 @app.route("/api/staging")
 def api_staging():
+    """
+    Unified pending queue:
+      • staging.db.staged_candidates — local probes & non-direct pipeline runs
+      • competitors.db.candidate_companies (status='pending') — CI scans (--direct)
+    De-duplicated by discovered_name (staging wins, since it has richer evidence).
+    """
     s = StagingDB()
     data = s.get_pending()
     s.close()
+
+    db = Database(config.DB_PATH)
+    db.init_schema()
+    seen = {c["discovered_name"] for c in data.get("candidates", [])}
+    extra = [c for c in db.get_candidates("pending") if c["discovered_name"] not in seen]
+    db.close()
+
+    data["candidates"] = list(data.get("candidates", [])) + extra
     return jsonify(data)
 
 
@@ -178,30 +192,40 @@ def reject_event(row_id):
 
 @app.route("/api/staging/candidates/<row_id>/approve", methods=["POST"])
 def approve_candidate(row_id):
-    s = StagingDB()
-    row = s.get_candidate(row_id)
-    if not row:
-        s.close()
-        abort(404)
-    evidence = row.get("initial_evidence") or "{}"
-    if isinstance(evidence, str):
-        try:
-            evidence = _json.loads(evidence)
-        except Exception:
-            evidence = {}
+    """
+    Approve from either source:
+      • staging.db row → copy into final DB, then promote.
+      • final-DB row (CI scan) → promote in place.
+    """
+    s  = StagingDB()
     db = Database(config.DB_PATH)
     db.init_schema()
-    cid = db.insert_candidate({
-        "discovered_name":  row["discovered_name"],
-        "discovered_url":   row["discovered_url"],
-        "discovery_source": row["discovery_source"] or "",
-        "discovery_reason": row["discovery_reason"],
-        "initial_evidence": evidence,
-    })
-    db.approve_candidate(cid)
+
+    row = s.get_candidate(row_id)
+    if row:
+        evidence = row.get("initial_evidence") or "{}"
+        if isinstance(evidence, str):
+            try:
+                evidence = _json.loads(evidence)
+            except Exception:
+                evidence = {}
+        cid = db.insert_candidate({
+            "discovered_name":  row["discovered_name"],
+            "discovered_url":   row["discovered_url"],
+            "discovery_source": row["discovery_source"] or "",
+            "discovery_reason": row["discovery_reason"],
+            "initial_evidence": evidence,
+        })
+        db.approve_candidate(cid)
+        s.set_status("staged_candidates", row_id, "approved")
+    else:
+        try:
+            db.approve_candidate(row_id)
+        except ValueError:
+            db.close(); s.close(); abort(404)
+
     _export()
     db.close()
-    s.set_status("staged_candidates", row_id, "approved")
     s.close()
     return jsonify({"ok": True})
 
@@ -209,7 +233,13 @@ def approve_candidate(row_id):
 @app.route("/api/staging/candidates/<row_id>/reject", methods=["POST"])
 def reject_candidate(row_id):
     s = StagingDB()
-    s.set_status("staged_candidates", row_id, "rejected")
+    if s.get_candidate(row_id):
+        s.set_status("staged_candidates", row_id, "rejected")
+    else:
+        db = Database(config.DB_PATH)
+        db.init_schema()
+        db.reject_candidate(row_id)
+        db.close()
     s.close()
     return jsonify({"ok": True})
 
