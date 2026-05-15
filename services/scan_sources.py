@@ -10,6 +10,7 @@ Sources:
   5. Techstars mining cohorts (Serper)        ⚠️  requires SERPER_API_KEY
   6. arXiv physics.geo-ph + cs.LG (API)      ✅ working
   7. LinkedIn mining AI startups (Serper)     ⚠️  requires SERPER_API_KEY
+  8. Claude direct discovery (web_search)    ✅ always works (paid per search)
 
 All output is source-backed: every field comes directly from the source text.
 No LLM fabrication. Unknown → null / omit.
@@ -21,7 +22,7 @@ from xml.etree import ElementTree as ET
 
 import httpx
 
-from services.utils import fetch_page, llm, parse_json, web_search
+from services.utils import fetch_page, llm, llm_with_web_search, parse_json, web_search
 
 # ── extraction prompt (reused per source) ──────────────────────────────────
 
@@ -133,6 +134,41 @@ def _fetch_arxiv() -> str:
         return ""
 
 
+def _claude_discover(known: set[str]) -> list[dict]:
+    """
+    Use Claude's native web_search to discover new mining/subsurface AI companies.
+    Returns candidates already in the standard schema (no _extract needed).
+    """
+    skip_clause = f"Already known (skip): {', '.join(sorted(known)[:30])}\n" if known else ""
+    prompt = textwrap.dedent(f"""
+        Search the web to discover startup companies using AI/ML for mineral exploration,
+        mining operations, or subsurface/geophysics analysis. Focus on 2024-2026 activity:
+        recent funding, product launches, accelerator cohorts, corporate venture portfolios
+        (BHP Ventures, Rio Tinto Ventures, Cathay Innovation, Techstars Mining), news.
+
+        {skip_clause}
+        Skip incumbents: Schlumberger, Halliburton, Hexagon, Trimble, Esri, Baker Hughes,
+        large universities, national labs.
+
+        Return ONLY JSON, no prose:
+        {{"companies": [
+          {{"name": str,
+            "website": str|null,
+            "summary": str (≤25 words, verbatim or close paraphrase from a cited page),
+            "signals": str|null (funding amount / stage / investors, only if explicitly stated),
+            "source_url": str (URL where you found this company)}}
+        ]}}
+
+        Rules: only cite real URLs you actually searched. Never invent. Unknown → null.
+    """).strip()
+    try:
+        raw, _pages = llm_with_web_search(prompt, max_uses=5, max_tokens=4096)
+        return parse_json(raw).get("companies", [])
+    except Exception as e:
+        print(f"    [claude_discover] ✗ failed: {e}")
+        return []
+
+
 def _search_text(queries: list[str], n_per_query: int = 5) -> str:
     """
     Run Serper searches and return concatenated snippets.
@@ -230,6 +266,17 @@ def run(known_companies: list[str] | None = None) -> dict:
             all_candidates.extend(new)
         except Exception as e:
             print(f"    [scan] ✗ error: {e}")
+
+    # 8. Claude direct discovery — independent broad search via Anthropic web_search
+    print("  [scan] Claude direct discovery (web_search)")
+    try:
+        claude_finds = _claude_discover(known)
+        new = [c for c in claude_finds if c.get("name") and c["name"] not in known]
+        if new:
+            print(f"    → {len(new)} candidate(s) found")
+        all_candidates.extend(new)
+    except Exception as e:
+        print(f"    [scan] ✗ error: {e}")
 
     # deduplicate by name (case-insensitive)
     seen_names: set[str] = set()

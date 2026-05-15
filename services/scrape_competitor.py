@@ -18,7 +18,7 @@ import textwrap
 import httpx
 
 from core import config
-from services.utils import fetch_page, llm, parse_json, web_search
+from services.utils import fetch_page, llm, llm_with_web_search, parse_json, web_search
 
 _SCHEMA = """
 Return ONLY a JSON object:
@@ -97,6 +97,38 @@ def _domain(url: str) -> str:
     return url.replace("https://", "").replace("http://", "").split("/")[0].lstrip("www.")
 
 
+def _claude_research(
+    company_name: str, website_url: str | None
+) -> tuple[str, list[dict]]:
+    """
+    Deep web research on a single company via Anthropic web_search + web_fetch.
+    Returns (synthesised_report, fetched_pages) where fetched_pages is a list
+    of {"url", "content"} dicts that the caller stores alongside scraped HTML.
+    Model is opus-4-7; each tool capped at 5 invocations.
+    """
+    prompt = textwrap.dedent(f"""
+        Research the company "{company_name}" (website: {website_url or 'unknown'})
+        as a competitive-intelligence analyst.
+
+        Use web_search to find relevant URLs, then web_fetch to pull full page
+        contents for the most informative ones. Cover:
+          • Funding rounds, investors, valuations, lead vs follow
+          • Founders / leadership backgrounds (LinkedIn, prior companies)
+          • Technology / architecture / model claims (papers, blog posts)
+          • Customers, pilots, named partnerships
+          • Hiring signals (open roles, team growth)
+          • Academic publications (arXiv, peer-reviewed)
+
+        Return a structured plain-text report. For every fact, cite the source URL
+        inline like [source: https://...]. Mark unknowns explicitly. Do not invent.
+    """).strip()
+    try:
+        return llm_with_web_search(prompt, max_uses=5, max_tokens=4096)
+    except Exception as e:
+        print(f"    [claude_research] ✗ failed: {e}")
+        return "", []
+
+
 def run(
     company_name: str,
     website_url: str | None = None,
@@ -139,29 +171,37 @@ def run(
             if any(prefix in sub for prefix in ["app.", "docs.", "product.", "platform."]):
                 _add(f"https://{sub}", 1, "website_subdomain")
 
-    # 3. web searches
-    search_batches = [
-        # funding news
-        (f'"{company_name}" funding round raises', 2, "news"),
-        (f'"{company_name}" site:techcrunch.com OR site:betakit.com', 2, "news"),
-        (f'"{company_name}" series seed "million" investors', 2, "news"),
-        # founders / leadership
-        (f'"{company_name}" founder CEO co-founder background', 2, "leadership"),
-        (f'"{company_name}" founded by team LinkedIn', 2, "leadership"),
-        # technology / architecture
-        (f'"{company_name}" technology architecture machine learning AI model', 2, "tech"),
-        (f'"{company_name}" research paper arXiv publication', 3, "academic"),
-        # partnerships / customers
-        (f'"{company_name}" partnership customer pilot mining company', 2, "partnership"),
-        # general
-        (f'"{company_name}" mining exploration AI subsurface', 2, "general"),
-    ]
-
-    for query, tier, src_type in search_batches:
-        for hit in web_search(query, n=3):
-            url = hit["url"]
+    # 3. web research — Serper if configured, else fall back to Claude web_search
+    if config.SERPER_API_KEY:
+        search_batches = [
+            (f'"{company_name}" funding round raises', 2, "news"),
+            (f'"{company_name}" site:techcrunch.com OR site:betakit.com', 2, "news"),
+            (f'"{company_name}" series seed "million" investors', 2, "news"),
+            (f'"{company_name}" founder CEO co-founder background', 2, "leadership"),
+            (f'"{company_name}" founded by team LinkedIn', 2, "leadership"),
+            (f'"{company_name}" technology architecture machine learning AI model', 2, "tech"),
+            (f'"{company_name}" research paper arXiv publication', 3, "academic"),
+            (f'"{company_name}" partnership customer pilot mining company', 2, "partnership"),
+            (f'"{company_name}" mining exploration AI subsurface', 2, "general"),
+        ]
+        for query, tier, src_type in search_batches:
+            for hit in web_search(query, n=3):
+                url = hit["url"]
+                if url not in pages_md:
+                    _add(url, tier, src_type)
+    else:
+        report, fetched = _claude_research(company_name, website_url)
+        if report:
+            key = "anthropic://web_search"
+            pages_md[key]  = report
+            raw_pages[key] = report
+            sources_used.append({"url": key, "tier": 2, "type": "claude_research"})
+        for p in fetched:
+            url = p["url"]
             if url not in pages_md:
-                _add(url, tier, src_type)
+                pages_md[url]  = p["content"]
+                raw_pages[url] = p["content"]
+                sources_used.append({"url": url, "tier": 2, "type": "claude_fetched"})
 
     # cap total pages
     pages_md = dict(list(pages_md.items())[:max(config.MAX_PAGES_PER_COMPANY, 15)])
