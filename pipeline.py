@@ -8,7 +8,7 @@ Orchestrator — run with:
 """
 import argparse
 import json
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -59,17 +59,20 @@ def scan_run(db: Database, staging_db: StagingDB | None = None):
     print("  done.")
 
 
-def weekly_run(db: Database, staging_db: StagingDB | None = None):
+def weekly_run(db: Database, staging_db: StagingDB | None = None, on_progress=None):
     """Deep-scrape every active company; merge or stage field updates."""
     print("--- WEEKLY RUN ---")
     run_id = staging_db.start_run("weekly") if staging_db else None
+    errors: list[dict] = []
 
     for c in db.get_companies(status="active"):
-        print(f"  scraping: {c['canonical_name']}")
+        name = c["canonical_name"]
+        print(f"  scraping: {name}")
         try:
-            result = services.scrape_competitor(
-                c["canonical_name"], c.get("website"), c.get("linkedin_url")
-            )
+            result = services.scrape_competitor(name, c.get("website"), c.get("linkedin_url"))
+
+            if result.get("_error"):
+                raise RuntimeError(result["_error"])
 
             for page_url, html in result.get("raw_pages", {}).items():
                 db.insert_raw_signal({
@@ -80,15 +83,28 @@ def weekly_run(db: Database, staging_db: StagingDB | None = None):
                 })
 
             if staging_db:
-                stage_company_result(staging_db, db, run_id, c["id"], c["canonical_name"], result)
+                stage_company_result(staging_db, db, run_id, c["id"], name, result)
             else:
                 merge_scraped_company(db, c["id"], result)
+
+            db.update_company(c["id"], {
+                "last_scrape_error": None,
+                "last_scraped_at": datetime.utcnow().isoformat(),
+            })
+            if on_progress:
+                on_progress({"company": name, "status": "ok"})
+
         except Exception as e:
-            print(f"    error: {e}")
+            err_msg = str(e)
+            errors.append({"company": name, "error": err_msg})
+            db.update_company(c["id"], {"last_scrape_error": err_msg})
+            print(f"    ✗ {name}: {err_msg}")
+            if on_progress:
+                on_progress({"company": name, "status": "error", "error": err_msg})
 
     if staging_db:
-        staging_db.finish_run(run_id, "done")
-    print("  done.")
+        staging_db.finish_run(run_id, "done", {"errors": errors})
+    print(f"  done. ({len(errors)} error(s))")
 
 
 def digest_run(db: Database) -> str:

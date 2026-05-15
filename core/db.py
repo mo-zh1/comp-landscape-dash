@@ -32,6 +32,8 @@ class Database:
             ("funding_trajectory", "TEXT"),
             ("investors_text", "TEXT"),
             ("valuation", "TEXT"),
+            ("last_scrape_error", "TEXT"),
+            ("last_scraped_at", "TEXT"),
         ]
         for col, typ in new_cols:
             try:

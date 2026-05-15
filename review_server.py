@@ -30,9 +30,9 @@ def _spawn(job_id: str, fn, *args):
     def _run():
         try:
             result = fn(*args)
-            _jobs[job_id] = {"status": "done", **(result or {})}
+            _jobs[job_id].update({"status": "done", **(result or {})})
         except Exception as exc:
-            _jobs[job_id] = {"status": "error", "error": str(exc)}
+            _jobs[job_id].update({"status": "error", "error": str(exc)})
     t = threading.Thread(target=_run, daemon=True)
     t.start()
 
@@ -280,16 +280,21 @@ def api_probe_status(job_id):
 
 # ── pipeline run API (async) ──────────────────────────────────────────────────
 
-def _do_run(trigger: str):
+def _do_run(job_id: str, trigger: str):
     from pipeline import scan_run, weekly_run, digest_run
     db = Database(config.DB_PATH)
     db.init_schema()
     s = StagingDB()
-    dispatch = {"scan": scan_run, "weekly": weekly_run}
-    if trigger in dispatch:
-        dispatch[trigger](db, s)
+
+    progress: list[dict] = _jobs[job_id]["progress"]
+
+    if trigger == "scan":
+        scan_run(db, s)
+    elif trigger == "weekly":
+        weekly_run(db, s, on_progress=progress.append)
     elif trigger == "digest":
         digest_run(db)
+
     s.close()
     db.close()
     _export()
@@ -303,8 +308,8 @@ def api_run():
     if trigger not in ("scan", "weekly", "digest"):
         abort(400)
     job_id = uuid4().hex[:12]
-    _jobs[job_id] = {"status": "running", "trigger": trigger}
-    _spawn(job_id, _do_run, trigger)
+    _jobs[job_id] = {"status": "running", "trigger": trigger, "progress": []}
+    _spawn(job_id, _do_run, job_id, trigger)
     return jsonify({"job_id": job_id})
 
 

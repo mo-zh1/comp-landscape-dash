@@ -3,6 +3,7 @@ Shared utilities for all services.
 Centralises: Anthropic client, web search (Serper), page fetch (httpx + BS4).
 """
 import json
+import time
 from functools import lru_cache
 
 import anthropic
@@ -11,6 +12,19 @@ from bs4 import BeautifulSoup
 from markdownify import markdownify
 
 from core import config
+
+# ── retry ─────────────────────────────────────────────────────────────────────
+
+def _retry(fn, max_attempts: int = 3, delay: float = 1.5):
+    """Call fn(); on exception retry up to max_attempts with linear backoff."""
+    for attempt in range(max_attempts):
+        try:
+            return fn()
+        except Exception:
+            if attempt == max_attempts - 1:
+                raise
+            time.sleep(delay * (attempt + 1))
+
 
 # ── LLM client ────────────────────────────────────────────────────────────────
 
@@ -22,13 +36,12 @@ def get_client() -> anthropic.Anthropic:
 
 
 def llm(prompt: str, max_tokens: int = 4096) -> str:
-    """Single-turn LLM call. Returns raw text."""
-    response = get_client().messages.create(
+    """Single-turn LLM call with up to 3 retries on transient failure."""
+    return _retry(lambda: get_client().messages.create(
         model=config.ANTHROPIC_MODEL,
         max_tokens=max_tokens,
         messages=[{"role": "user", "content": prompt}],
-    )
-    return response.content[0].text.strip()
+    ).content[0].text.strip())
 
 
 def llm_with_web_search(
@@ -101,9 +114,9 @@ _serper_warned = False
 def fetch_page(url: str, timeout: int = 15) -> tuple[str, str]:
     """
     Fetch URL → (markdown_text, raw_html).
-    Returns ('', '') on failure.
+    Retries once on transient failure; returns ('', '') if both attempts fail.
     """
-    try:
+    def _do():
         r = httpx.get(url, timeout=timeout, follow_redirects=True, headers=_HEADERS)
         r.raise_for_status()
         raw_html = r.text
@@ -112,6 +125,9 @@ def fetch_page(url: str, timeout: int = 15) -> tuple[str, str]:
             tag.decompose()
         md = markdownify(str(soup), heading_style="ATX")
         return md[:8000], raw_html[:20000]
+
+    try:
+        return _retry(_do, max_attempts=2, delay=1.0)
     except Exception:
         return "", ""
 

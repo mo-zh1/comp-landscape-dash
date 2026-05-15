@@ -696,7 +696,10 @@ function renderCompanies(companies) {
     document.getElementById('companies-tbody').innerHTML = rows.map(c => `
       <tr>
         <td>
-          <div><a class="company-name" href="${c.website||'#'}" target="_blank">${c.canonical_name}</a></div>
+          <div>
+            <a class="company-name" href="${c.website||'#'}" target="_blank">${c.canonical_name}</a>
+            ${c.last_scrape_error ? `<span class="badge" style="background:#c0392b;margin-left:6px;cursor:help" title="${c.last_scrape_error.replace(/"/g,'&quot;')}">scrape error</span>` : ''}
+          </div>
           ${c.website ? `<a class="company-url" href="${c.website}" target="_blank">${c.website.replace(/^https?:\/\/(www\.)?/,'').split('/')[0]}</a>` : ''}
         </td>
         <td>${badge(c.status || 'active')}</td>
@@ -714,8 +717,9 @@ function renderCompanies(companies) {
         <td class="company-col">
           ${c.canonical_name}
           ${c.website ? `<a href="${c.website}" target="_blank">${c.website.replace(/^https?:\/\/(www\.)?/,'').split('/')[0]}</a>` : ''}
+          ${c.last_scrape_error ? `<div style="color:#e74c3c;font-size:11px;margin-top:3px">⚠ last scrape failed — fields may be stale. <span style="opacity:.7">${c.last_scrape_error.slice(0,100)}</span></div>` : ''}
         </td>
-        <td>${c.business_model_summary || '<span class="dim">—</span>'}</td>
+        <td>${c.last_scrape_error ? '<span style="color:#e74c3c;font-size:12px">scrape error</span>' : (c.business_model_summary || '<span class="dim">—</span>')}</td>
         <td>${c.technical || '<span class="dim">—</span>'}</td>
         <td>${c.stage_description || '<span class="dim">—</span>'}</td>
         <td>${c.latest_round_text || '<span class="dim">—</span>'}</td>
@@ -1269,6 +1273,15 @@ async function reloadStagingAndData() {
   } catch {}
 }
 
+function _renderProgress(progress) {
+  if (!progress || !progress.length) return '';
+  return progress.map(p =>
+    p.status === 'error'
+      ? `<div style="color:#e74c3c;font-size:12px">✗ ${p.company}: <span style="opacity:.8">${p.error||''}</span></div>`
+      : `<div style="color:var(--active-text);font-size:12px">✓ ${p.company}</div>`
+  ).join('');
+}
+
 async function triggerRun(trigger) {
   const statusEl = document.getElementById('run-status');
   try {
@@ -1279,15 +1292,29 @@ async function triggerRun(trigger) {
     });
     if (!r.ok) throw new Error('server offline');
     const { job_id } = await r.json();
-    if (statusEl) statusEl.textContent = `Running ${trigger}… (job ${job_id})`;
+    if (statusEl) statusEl.innerHTML =
+      `<span class="dim">Running ${trigger}…</span><div id="run-progress" style="margin-top:6px"></div>`;
+
     const poll = setInterval(async () => {
       const jr = await fetch(`/api/run/${job_id}`);
       const jd = await jr.json();
+
+      const progEl = document.getElementById('run-progress');
+      if (progEl && jd.progress) progEl.innerHTML = _renderProgress(jd.progress);
+
       if (jd.status !== 'running') {
         clearInterval(poll);
-        if (statusEl) statusEl.textContent = `${trigger} ${jd.status} ✓`;
+        const ok  = (jd.progress||[]).filter(p => p.status === 'ok').length;
+        const err = (jd.progress||[]).filter(p => p.status === 'error').length;
+        const summary = jd.progress?.length ? ` · ${ok} ok${err ? `, <span style="color:#e74c3c">${err} failed</span>` : ''}` : '';
+        const icon = jd.status === 'error' ? '✗' : '✓';
+        const color = jd.status === 'error' ? '#e74c3c' : 'var(--active-text)';
+        if (statusEl) statusEl.innerHTML =
+          `<span style="color:${color}">${icon} ${trigger} ${jd.status}${summary}</span>` +
+          (jd.error ? `<div style="color:#e74c3c;font-size:12px;margin-top:4px">${jd.error}</div>` : '') +
+          `<div id="run-progress" style="margin-top:6px">${_renderProgress(jd.progress)}</div>`;
         reloadStagingAndData();
-        loadTimeline();  // refresh timeline record
+        loadTimeline();
       }
     }, 5000);
   } catch (err) {
