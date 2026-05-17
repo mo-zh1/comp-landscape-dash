@@ -6,19 +6,47 @@
 <title>Competitor Intelligence</title>
 <style>
   :root {
-    --bg:       #0b0b0b;
-    --surface:  #111111;
-    --surface2: #161616;
-    --border:   #1e1e1e;
-    --text:     #e2e2e2;
-    --muted:    #555555;
-    --accent:   #c9a864;
-    --active-bg:   rgba(45, 90, 45, 0.25);
-    --active-text: #6fcf6f;
-    --stealth-bg:  rgba(90, 70, 20, 0.25);
-    --stealth-text:#d4a93a;
-    --acquired-bg: rgba(50, 40, 100, 0.25);
-    --acquired-text:#9d8fe0;
+    --bg:       #050505;
+    --surface:  #101010;
+    --surface2: #181818;
+    --border:   #2a2a2a;
+    --text:     #f3f3f3;
+    --muted:    #b5b5b5;
+    --subtle:   #d8d8d8;
+    --accent:   #e2ad50;
+    --active-bg:   rgba(55, 154, 88, 0.22);
+    --active-text: #8ce5a4;
+    --stealth-bg:  rgba(226, 173, 80, 0.18);
+    --stealth-text:#f0c96f;
+    --acquired-bg: rgba(126, 105, 230, 0.22);
+    --acquired-text:#bcaeff;
+    --danger:   #ff6b6b;
+    --on-accent:#18120a;
+    --on-danger:#ffffff;
+    --soft-line:rgba(244,247,251,.08);
+    --shadow:   rgba(0,0,0,.28);
+  }
+
+  [data-theme="light"] {
+    --bg:       #f6f8fb;
+    --surface:  #ffffff;
+    --surface2: #eef4f8;
+    --border:   #d8e1ea;
+    --text:     #17202a;
+    --muted:    #5f6f7d;
+    --subtle:   #34495e;
+    --accent:   #b8791d;
+    --active-bg:   #e3f5e7;
+    --active-text: #1f7a3c;
+    --stealth-bg:  #fff1cf;
+    --stealth-text:#92620d;
+    --acquired-bg: #ece8ff;
+    --acquired-text:#5b4bb2;
+    --danger:   #c73838;
+    --on-accent:#ffffff;
+    --on-danger:#ffffff;
+    --soft-line:rgba(23,32,42,.08);
+    --shadow:   rgba(23,32,42,.16);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,8 +55,8 @@
     background: var(--bg);
     color: var(--text);
     font-family: -apple-system, 'Inter', 'Helvetica Neue', sans-serif;
-    font-size: 13px;
-    line-height: 1.6;
+    font-size: 15px;
+    line-height: 1.55;
     min-height: 100vh;
   }
 
@@ -41,13 +69,13 @@
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;
-    padding: 0 32px;
-    height: 52px;
+    padding: 0 34px;
+    height: 58px;
     gap: 0;
   }
   .nav-brand {
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: 15px;
+    font-size: 17px;
     color: var(--accent);
     letter-spacing: 0.04em;
     margin-right: 40px;
@@ -58,10 +86,10 @@
     background: none;
     border: none;
     color: var(--muted);
-    font-size: 13px;
+    font-size: 14px;
     font-family: inherit;
-    padding: 0 18px;
-    height: 52px;
+    padding: 0 20px;
+    height: 58px;
     cursor: pointer;
     border-bottom: 2px solid transparent;
     transition: color 0.15s, border-color 0.15s;
@@ -71,29 +99,41 @@
   .tab-btn.active { color: var(--text); border-bottom-color: var(--accent); }
   .nav-right {
     margin-left: auto;
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
   }
+  .theme-toggle {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 4px;
+    font: inherit;
+    font-size: 13px;
+    padding: 6px 11px;
+    cursor: pointer;
+    margin-left: 16px;
+  }
+  .theme-toggle:hover { color: var(--text); border-color: var(--accent); }
 
   /* ── layout ── */
-  main { max-width: 1200px; margin: 0 auto; padding: 40px 32px 80px; }
+  main { max-width: 1440px; margin: 0 auto; padding: 44px 34px 88px; }
   .tab-pane { display: none; }
   .tab-pane.active { display: block; }
 
   /* ── page headings ── */
   h1 {
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: 26px;
+    font-size: 32px;
     font-weight: 400;
     color: var(--text);
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
   h2 {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--muted);
+    color: var(--subtle);
     margin-bottom: 16px;
     margin-top: 36px;
   }
@@ -111,17 +151,17 @@
   .stat {
     flex: 1;
     background: var(--surface);
-    padding: 18px 20px;
+    padding: 20px 22px;
   }
   .stat-value {
     font-family: Georgia, serif;
-    font-size: 28px;
+    font-size: 32px;
     color: var(--accent);
     line-height: 1;
     margin-bottom: 4px;
   }
   .stat-label {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
@@ -135,18 +175,18 @@
   }
   th {
     text-align: left;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--muted);
-    padding: 10px 12px;
+    color: var(--subtle);
+    padding: 12px 14px;
     border-bottom: 1px solid var(--border);
     white-space: nowrap;
     background: var(--surface);
   }
   td {
-    padding: 11px 12px;
+    padding: 14px;
     border-bottom: 1px solid var(--border);
     vertical-align: top;
   }
@@ -156,9 +196,9 @@
   /* ── badges ── */
   .badge {
     display: inline-block;
-    padding: 2px 8px;
-    border-radius: 3px;
-    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-size: 12px;
     font-weight: 500;
     white-space: nowrap;
   }
@@ -167,19 +207,19 @@
   .badge-acquired { background: var(--acquired-bg); color: var(--acquired-text); }
 
   .round {
-    font-size: 11px;
+    font-size: 13px;
     color: var(--accent);
   }
 
   /* ── company name link ── */
   .company-name {
-    font-weight: 500;
+    font-weight: 650;
     color: var(--text);
     text-decoration: none;
   }
   .company-name:hover { color: var(--accent); }
   .company-url {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
     text-decoration: none;
   }
@@ -189,17 +229,17 @@
   .event-list { display: flex; flex-direction: column; gap: 0; }
   .event-row {
     display: grid;
-    grid-template-columns: 90px 160px 130px 1fr 60px;
+    grid-template-columns: 108px 190px 150px 1fr 72px;
     align-items: start;
-    padding: 12px 0;
+    padding: 15px 0;
     border-bottom: 1px solid var(--border);
     gap: 16px;
   }
-  .event-row:hover { background: var(--surface2); margin: 0 -12px; padding: 12px; }
-  .event-date { color: var(--muted); font-size: 12px; white-space: nowrap; }
-  .event-company { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .event-row:hover { background: var(--surface2); margin: 0 -14px; padding: 15px 14px; }
+  .event-date { color: var(--muted); font-size: 13px; white-space: nowrap; }
+  .event-company { font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .event-type {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -207,7 +247,7 @@
   }
   .event-summary { color: var(--text); }
   .event-tier {
-    font-size: 11px;
+    font-size: 12px;
     color: var(--muted);
     text-align: right;
   }
@@ -220,8 +260,8 @@
     left: 0;
     background: var(--surface);
     z-index: 1;
-    min-width: 160px;
-    max-width: 200px;
+    min-width: 190px;
+    max-width: 240px;
   }
   .matrix-table tr:hover td:first-child { background: var(--surface2); }
   .matrix-dot {
@@ -233,7 +273,7 @@
   }
   .matrix-dot.lead { opacity: 1; width: 10px; height: 10px; }
   .matrix-label {
-    font-size: 10px;
+    font-size: 12px;
     color: var(--muted);
     margin-left: 4px;
   }
@@ -243,21 +283,63 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 24px;
+    padding: 26px;
     color: var(--muted);
     text-align: center;
     margin-top: 40px;
   }
 
   /* ── filter bar ── */
-  .filter-bar { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+  .filter-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+    margin-bottom: 24px;
+  }
+  .filter-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .filter-label {
+    color: var(--subtle);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    white-space: nowrap;
+  }
+  .filter-input,
+  .filter-select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font: inherit;
+    font-size: 14px;
+    border-radius: 4px;
+    padding: 8px 11px;
+    min-height: 38px;
+    outline: none;
+  }
+  .filter-input { min-width: 260px; flex: 1 1 320px; }
+  .filter-select { min-width: 150px; }
+  .filter-input:focus,
+  .filter-select:focus { border-color: var(--accent); }
+  .filter-count {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 13px;
+    white-space: nowrap;
+  }
   .filter-btn {
     background: var(--surface);
     border: 1px solid var(--border);
     color: var(--muted);
-    font-size: 12px;
+    font-size: 13px;
     font-family: inherit;
-    padding: 5px 12px;
+    padding: 7px 13px;
     border-radius: 4px;
     cursor: pointer;
     transition: all 0.15s;
@@ -267,21 +349,21 @@
 
   /* ── detail table ── */
   #detail-table td {
-    font-size: 12px;
-    line-height: 1.55;
+    font-size: 13px;
+    line-height: 1.62;
     vertical-align: top;
     word-break: break-word;
     white-space: normal;
-    padding: 12px;
+    padding: 14px;
   }
   #detail-table .company-col {
     font-weight: 600;
     color: var(--accent);
-    font-size: 12px;
+    font-size: 14px;
   }
   #detail-table .company-col a {
     display: block;
-    font-size: 10px;
+    font-size: 12px;
     color: var(--muted);
     text-decoration: none;
     margin-top: 2px;
@@ -290,71 +372,71 @@
   #detail-table .company-col a:hover { color: var(--text); }
 
   /* ── amount ── */
-  .amount { font-family: 'Courier New', monospace; font-size: 12px; color: var(--text); }
+  .amount { font-family: 'Courier New', monospace; font-size: 13px; color: var(--text); }
   .dim    { color: var(--muted); }
 
   /* ── review tab ── */
   .review-subnav { display:flex; gap:0; border-bottom:1px solid var(--border); margin-bottom:28px; }
-  .sub-btn { background:none; border:none; color:var(--muted); font-size:12px; font-family:inherit; padding:8px 18px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all 0.15s; }
+  .sub-btn { background:none; border:none; color:var(--muted); font-size:14px; font-family:inherit; padding:10px 18px; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all 0.15s; }
   .sub-btn:hover { color:var(--text); }
   .sub-btn.active { color:var(--text); border-bottom-color:var(--accent); }
   .sub-pane { display:none; }
   .sub-pane.active { display:block; }
 
-  .probe-panel { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:20px 24px; margin-bottom:32px; }
-  .probe-form { display:flex; gap:8px; margin-top:12px; flex-wrap:wrap; }
-  .probe-input { background:var(--surface2); border:1px solid var(--border); color:var(--text); font-size:13px; font-family:inherit; padding:7px 12px; border-radius:4px; flex:1; min-width:160px; outline:none; }
+  .probe-panel { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:22px 24px; margin-bottom:34px; }
+  .probe-form { display:flex; gap:10px; margin-top:14px; flex-wrap:wrap; }
+  .probe-input { background:var(--surface2); border:1px solid var(--border); color:var(--text); font-size:14px; font-family:inherit; padding:10px 12px; border-radius:4px; flex:1; min-width:180px; outline:none; }
   .probe-input:focus { border-color:var(--accent); }
-  .probe-run-btn { background:var(--accent); color:var(--bg); border:none; border-radius:4px; padding:7px 18px; font-size:13px; font-family:inherit; cursor:pointer; font-weight:500; white-space:nowrap; }
+  .probe-run-btn { background:var(--accent); color:var(--on-accent); border:none; border-radius:4px; padding:10px 18px; font-size:14px; font-family:inherit; cursor:pointer; font-weight:650; white-space:nowrap; }
   .probe-run-btn:disabled { opacity:0.5; cursor:not-allowed; }
-  #probe-status { margin-top:10px; font-size:12px; min-height:18px; }
+  #probe-status { margin-top:12px; font-size:13px; min-height:20px; }
 
   .staging-section { margin-bottom:40px; }
-  .staging-card { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:14px 16px; margin-bottom:8px; }
-  .staging-card-header { display:flex; align-items:center; gap:10px; margin-bottom:9px; flex-wrap:wrap; }
-  .staging-company { font-weight:600; color:var(--accent); }
-  .staging-field { font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); background:var(--surface2); padding:2px 8px; border-radius:3px; }
-  .staging-diff { display:flex; align-items:flex-start; gap:10px; font-size:12px; margin-bottom:9px; }
+  .staging-card { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:16px 18px; margin-bottom:10px; }
+  .staging-card-header { display:flex; align-items:center; gap:10px; margin-bottom:11px; flex-wrap:wrap; }
+  .staging-company { font-weight:650; color:var(--accent); }
+  .staging-field { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--subtle); background:var(--surface2); padding:3px 8px; border-radius:3px; }
+  .staging-diff { display:flex; align-items:flex-start; gap:12px; font-size:14px; margin-bottom:11px; }
   .old-val { color:var(--muted); text-decoration:line-through; max-width:42%; word-break:break-word; }
   .new-val { color:var(--active-text); max-width:52%; word-break:break-word; }
   .diff-arrow { color:var(--muted); flex-shrink:0; padding-top:1px; }
-  .staging-source { font-size:11px; color:var(--muted); margin-bottom:9px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .staging-source { font-size:13px; color:var(--muted); margin-bottom:11px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .staging-source a { color:var(--muted); text-decoration:none; }
   .staging-source a:hover { color:var(--text); }
-  .staging-dup { font-size:10px; color:var(--muted); background:var(--surface2); padding:1px 6px; border-radius:2px; }
+  .staging-dup { font-size:12px; color:var(--muted); background:var(--surface2); padding:2px 7px; border-radius:3px; }
   .staging-actions { display:flex; gap:8px; align-items:center; }
-  .btn-approve { background:rgba(45,90,45,.35); color:var(--active-text); border:1px solid rgba(111,207,111,.3); border-radius:4px; padding:4px 14px; font-size:12px; font-family:inherit; cursor:pointer; }
+  .btn-approve { background:rgba(45,90,45,.35); color:var(--active-text); border:1px solid rgba(111,207,111,.3); border-radius:4px; padding:6px 14px; font-size:13px; font-family:inherit; cursor:pointer; }
   .btn-approve:hover { background:rgba(45,90,45,.6); }
-  .btn-reject { background:var(--surface2); color:var(--muted); border:1px solid var(--border); border-radius:4px; padding:4px 14px; font-size:12px; font-family:inherit; cursor:pointer; }
-  .btn-reject:hover { color:#e55; border-color:#e55; }
+  .btn-reject { background:var(--surface2); color:var(--muted); border:1px solid var(--border); border-radius:4px; padding:6px 14px; font-size:13px; font-family:inherit; cursor:pointer; }
+  .btn-reject:hover { color:var(--danger); border-color:var(--danger); }
   .bulk-bar { display:flex; gap:8px; margin-bottom:10px; align-items:center; flex-wrap:wrap; min-height:30px; }
-  .select-all-label { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); cursor:pointer; user-select:none; padding:3px 0; }
+  .select-all-label { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); cursor:pointer; user-select:none; padding:3px 0; }
   .select-all-label:hover { color:var(--text); }
   .card-checkbox { width:15px; height:15px; accent-color:var(--accent); cursor:pointer; flex-shrink:0; }
   .bulk-sep { width:1px; height:16px; background:var(--border); flex-shrink:0; }
-  .bulk-count { font-size:11px; color:var(--muted); min-width:72px; }
-  .btn-bulk-approve { background:rgba(45,90,45,.35); color:var(--active-text); border:1px solid rgba(111,207,111,.3); border-radius:4px; padding:4px 14px; font-size:12px; font-family:inherit; cursor:pointer; }
+  .bulk-count { font-size:13px; color:var(--muted); min-width:72px; }
+  .btn-bulk-approve { background:rgba(45,90,45,.35); color:var(--active-text); border:1px solid rgba(111,207,111,.3); border-radius:4px; padding:6px 14px; font-size:13px; font-family:inherit; cursor:pointer; }
   .btn-bulk-approve:disabled { opacity:.3; cursor:not-allowed; }
   .btn-bulk-approve:not(:disabled):hover { background:rgba(45,90,45,.6); }
-  .btn-bulk-reject { background:var(--surface2); color:var(--muted); border:1px solid var(--border); border-radius:4px; padding:4px 14px; font-size:12px; font-family:inherit; cursor:pointer; }
+  .btn-bulk-reject { background:var(--surface2); color:var(--muted); border:1px solid var(--border); border-radius:4px; padding:6px 14px; font-size:13px; font-family:inherit; cursor:pointer; }
   .btn-bulk-reject:disabled { opacity:.3; cursor:not-allowed; }
-  .btn-bulk-reject:not(:disabled):hover { color:#e55; border-color:#e55; }
+  .btn-bulk-reject:not(:disabled):hover { color:var(--danger); border-color:var(--danger); }
   .staging-card.selected { border-color:rgba(201,168,100,.45); background:rgba(201,168,100,.04); }
 
-  .timeline-row { display:grid; grid-template-columns:90px 150px 70px 1fr; gap:14px; padding:11px 0; border-bottom:1px solid var(--border); align-items:center; cursor:pointer; }
-  .timeline-row:hover { background:var(--surface2); margin:0 -12px; padding:11px 12px; }
+  .timeline-row { display:grid; grid-template-columns:108px 180px 86px 1fr; gap:16px; padding:14px 0; border-bottom:1px solid var(--border); align-items:center; cursor:pointer; }
+  .timeline-row:hover { background:var(--surface2); margin:0 -14px; padding:14px; }
   .timeline-detail { display:none; padding:10px 0 16px; border-bottom:1px solid var(--border); }
   .timeline-detail.open { display:block; }
   .detail-section { margin-bottom:10px; }
-  .detail-section-title { font-size:10px; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:6px; }
-  .detail-item { display:grid; grid-template-columns:130px 1fr 70px; gap:8px; font-size:12px; padding:4px 0; border-bottom:1px solid rgba(255,255,255,.03); align-items:start; }
+  .detail-section-title { font-size:12px; text-transform:uppercase; letter-spacing:.07em; color:var(--subtle); margin-bottom:6px; }
+  .detail-item { display:grid; grid-template-columns:160px 1fr 84px; gap:10px; font-size:13px; padding:6px 0; border-bottom:1px solid var(--soft-line); align-items:start; }
   .detail-item:last-child { border-bottom:none; }
   .detail-company { color:var(--accent); font-weight:500; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .detail-desc { color:var(--text); }
-  .detail-status-approved { color:var(--active-text); font-size:11px; }
-  .detail-status-rejected  { color:var(--muted);       font-size:11px; text-decoration:line-through; }
-  .detail-status-pending   { color:var(--stealth-text); font-size:11px; }
-  .trig-badge { font-size:10px; text-transform:uppercase; letter-spacing:.05em; padding:2px 8px; border-radius:3px; display:inline-block; }
+  .detail-status-approved { color:var(--active-text); font-size:12px; }
+  .detail-status-rejected  { color:var(--muted);       font-size:12px; text-decoration:line-through; }
+  .detail-status-pending   { color:var(--stealth-text); font-size:12px; }
+  .trig-badge { font-size:12px; text-transform:uppercase; letter-spacing:.05em; padding:3px 8px; border-radius:3px; display:inline-block; }
   .trig-scan    { background:rgba(45,130,160,.2);  color:#7fc8e0; }
   .trig-weekly  { background:rgba(90,45,180,.2);  color:#a07ff0; }
   .trig-probe   { background:rgba(45,150,90,.2);  color:#7fd0a0; }
@@ -365,21 +447,21 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 16px 20px;
-    margin-bottom: 10px;
+    padding: 18px 20px;
+    margin-bottom: 12px;
     cursor: pointer;
   }
   .digest-card:hover { border-color: var(--muted); }
   .digest-card-header { display:flex; align-items:center; gap:12px; }
   .digest-type-badge {
-    font-size:10px; text-transform:uppercase; letter-spacing:.06em;
-    padding:2px 8px; border-radius:3px;
+    font-size:12px; text-transform:uppercase; letter-spacing:.06em;
+    padding:3px 8px; border-radius:3px;
   }
   .digest-type-weekly   { background:rgba(90,45,180,.2);  color:#a07ff0; }
   .digest-type-on_demand { background:rgba(201,168,100,.15); color:var(--accent); }
   .digest-body {
     display:none; margin-top:14px; border-top:1px solid var(--border); padding-top:14px;
-    font-size:12px; line-height:1.7; white-space:pre-wrap; color:var(--text);
+    font-size:14px; line-height:1.75; white-space:pre-wrap; color:var(--text);
     font-family: 'Georgia', serif;
   }
   .digest-body.open { display:block; }
@@ -387,7 +469,7 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 20px 24px;
+    padding: 22px 24px;
     margin-bottom: 32px;
   }
   .digest-checkboxes {
@@ -396,28 +478,28 @@
   .digest-cb-label {
     display: flex; align-items: center; gap: 6px;
     background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 4px; padding: 4px 10px;
-    font-size: 12px; color: var(--muted); cursor: pointer;
+    border-radius: 4px; padding: 6px 10px;
+    font-size: 13px; color: var(--muted); cursor: pointer;
     transition: border-color .15s, color .15s;
   }
   .digest-cb-label:has(input:checked) { border-color: var(--accent); color: var(--text); }
   .digest-cb-label input { accent-color: var(--accent); }
   #digest-output {
     margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);
-    font-size: 12px; line-height: 1.7; white-space: pre-wrap; font-family: Georgia, serif;
+    font-size: 14px; line-height: 1.75; white-space: pre-wrap; font-family: Georgia, serif;
     display: none;
   }
   .ts-done    { color:var(--active-text); }
   .ts-running { color:var(--stealth-text); }
-  .ts-error   { color:#e55; }
+  .ts-error   { color:var(--danger); }
   .run-trigger-row { display:flex; gap:12px; justify-content:flex-end; margin-bottom:20px; flex-wrap:wrap; }
-  .run-btn { background:var(--surface); border:1px solid var(--border); color:var(--muted); font-size:12px; font-family:inherit; padding:5px 14px; border-radius:4px; cursor:pointer; }
+  .run-btn { background:var(--surface); border:1px solid var(--border); color:var(--muted); font-size:13px; font-family:inherit; padding:7px 14px; border-radius:4px; cursor:pointer; }
   .run-btn:hover { border-color:var(--accent); color:var(--accent); }
 
   /* ── save banner ── */
-  #save-banner { display:none; position:fixed; bottom:24px; right:24px; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:12px 18px; z-index:200; align-items:center; gap:14px; box-shadow:0 4px 24px rgba(0,0,0,.4); }
+  #save-banner { display:none; position:fixed; bottom:24px; right:24px; background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:14px 18px; z-index:200; align-items:center; gap:14px; box-shadow:0 12px 28px var(--shadow); }
   #save-banner.show { display:flex; }
-  .save-reload-btn { background:var(--accent); color:var(--bg); border:none; border-radius:4px; padding:5px 14px; font-size:12px; font-family:inherit; cursor:pointer; font-weight:500; }
+  .save-reload-btn { background:var(--accent); color:var(--on-accent); border:none; border-radius:4px; padding:7px 14px; font-size:13px; font-family:inherit; cursor:pointer; font-weight:650; }
 </style>
 </head>
 <body>
@@ -429,9 +511,10 @@
     <button class="tab-btn" data-tab="events">Events</button>
     <button class="tab-btn" data-tab="investors">Investors</button>
     <button class="tab-btn" data-tab="digests">Digests</button>
-    <button class="tab-btn" data-tab="review">Review <span id="review-badge" style="display:none;background:var(--accent);color:var(--bg);border-radius:10px;font-size:10px;padding:1px 6px;margin-left:4px;vertical-align:middle"></span></button>
+    <button class="tab-btn" data-tab="review">Review <span id="review-badge" style="display:none;background:var(--accent);color:var(--on-accent);border-radius:10px;font-size:12px;padding:1px 7px;margin-left:4px;vertical-align:middle"></span></button>
   </div>
   <span class="nav-right" id="generated-at"></span>
+  <button class="theme-toggle" id="theme-toggle" type="button" onclick="toggleTheme()">Light</button>
 </nav>
 
 <main>
@@ -443,12 +526,23 @@
 
     <div class="stats" id="stats-row"></div>
 
-    <div class="filter-bar" id="status-filters">
-      <span style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em">Status</span>
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="active">Active</button>
-      <button class="filter-btn" data-filter="stealth">Stealth</button>
-      <button class="filter-btn" data-filter="acquired">Acquired</button>
+    <div class="filter-panel">
+      <div class="filter-row">
+        <input class="filter-input" id="company-search" type="search" placeholder="Search company, product, investor, technology...">
+        <select class="filter-select" id="company-country-filter"><option value="all">All countries</option></select>
+        <select class="filter-select" id="company-stage-filter"><option value="all">All stages</option></select>
+        <select class="filter-select" id="company-round-filter"><option value="all">All rounds</option></select>
+        <span class="filter-count" id="company-filter-count"></span>
+      </div>
+      <div class="filter-row" style="margin-top:10px">
+        <div class="filter-bar" id="status-filters">
+          <span class="filter-label">Status</span>
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="active">Active</button>
+          <button class="filter-btn" data-filter="stealth">Stealth</button>
+          <button class="filter-btn" data-filter="acquired">Acquired</button>
+        </div>
+      </div>
     </div>
 
     <!-- summary table -->
@@ -505,14 +599,29 @@
     <h1>Events</h1>
     <p class="dim" style="margin-bottom:28px">Funding rounds, acquisitions, leadership changes — append-only log.</p>
 
-    <div class="filter-bar" id="type-filters">
-      <span style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em">Type</span>
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="funding_round">Funding</button>
-      <button class="filter-btn" data-filter="acquisition">Acquisition</button>
-      <button class="filter-btn" data-filter="leadership_change">Leadership</button>
-      <button class="filter-btn" data-filter="partnership">Partnership</button>
-      <button class="filter-btn" data-filter="customer_win">Customer</button>
+    <div class="filter-panel">
+      <div class="filter-row">
+        <input class="filter-input" id="event-search" type="search" placeholder="Search company, investor, customer, event text...">
+        <select class="filter-select" id="event-tier-filter">
+          <option value="all">All tiers</option>
+          <option value="1">Tier 1</option>
+          <option value="2">Tier 2</option>
+          <option value="3">Tier 3</option>
+          <option value="4">Tier 4</option>
+        </select>
+        <span class="filter-count" id="event-filter-count"></span>
+      </div>
+      <div class="filter-row" style="margin-top:10px">
+        <div class="filter-bar" id="type-filters">
+          <span class="filter-label">Type</span>
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="funding_round">Funding</button>
+          <button class="filter-btn" data-filter="acquisition">Acquisition</button>
+          <button class="filter-btn" data-filter="leadership_change">Leadership</button>
+          <button class="filter-btn" data-filter="partnership">Partnership</button>
+          <button class="filter-btn" data-filter="customer_win">Customer</button>
+        </div>
+      </div>
     </div>
 
     <div class="event-list" id="events-list"></div>
@@ -522,6 +631,20 @@
   <div class="tab-pane" id="tab-investors">
     <h1>Investor Map</h1>
     <p class="dim" style="margin-bottom:28px">Investors × portfolio companies. Filled dot = lead, outline = follow.</p>
+    <div class="filter-panel">
+      <div class="filter-row">
+        <input class="filter-input" id="investor-search" type="search" placeholder="Search investor or portfolio company...">
+        <select class="filter-select" id="investor-company-filter"><option value="all">All companies</option></select>
+        <select class="filter-select" id="investor-role-filter">
+          <option value="all">All roles</option>
+          <option value="lead">Lead</option>
+          <option value="follow">Follow</option>
+          <option value="strategic">Strategic</option>
+          <option value="accelerator">Accelerator</option>
+        </select>
+        <span class="filter-count" id="investor-filter-count"></span>
+      </div>
+    </div>
     <div class="matrix-wrap">
       <table class="matrix-table" id="investor-table">
         <thead><tr id="investor-header"></tr></thead>
@@ -535,16 +658,28 @@
     <h1>Digests</h1>
     <p class="dim" style="margin-bottom:28px">Weekly intelligence summaries and on-demand comparative analysis.</p>
 
+    <div class="filter-panel">
+      <div class="filter-row">
+        <input class="filter-input" id="digest-search" type="search" placeholder="Search digest title or content...">
+        <select class="filter-select" id="digest-type-filter">
+          <option value="all">All digest types</option>
+          <option value="weekly">Weekly</option>
+          <option value="on_demand">On demand</option>
+        </select>
+        <span class="filter-count" id="digest-filter-count"></span>
+      </div>
+    </div>
+
     <!-- on-demand generator (only shown when review_server.py is running) -->
     <div class="digest-gen-panel" id="digest-gen-panel" style="display:none">
       <h2 style="margin-top:0">Generate On-Demand Digest</h2>
-      <p class="dim" style="font-size:12px;margin-bottom:4px">Select companies to compare (or leave all unchecked for full weekly):</p>
+      <p class="dim" style="font-size:13px;margin-bottom:4px">Select companies to compare (or leave all unchecked for full weekly):</p>
       <div class="digest-checkboxes" id="digest-checkboxes"></div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
         <button class="probe-run-btn" id="digest-gen-btn" onclick="generateDigest()">Generate</button>
-        <button class="run-btn" onclick="toggleAllDigestCbs(false)" style="font-size:11px;padding:4px 10px">Clear</button>
-        <button class="run-btn" onclick="toggleAllDigestCbs(true)"  style="font-size:11px;padding:4px 10px">Select All</button>
-        <span id="digest-gen-status" class="dim" style="font-size:12px"></span>
+        <button class="run-btn" onclick="toggleAllDigestCbs(false)" style="font-size:13px;padding:6px 10px">Clear</button>
+        <button class="run-btn" onclick="toggleAllDigestCbs(true)"  style="font-size:13px;padding:6px 10px">Select All</button>
+        <span id="digest-gen-status" class="dim" style="font-size:13px"></span>
       </div>
       <div id="digest-output"></div>
     </div>
@@ -559,7 +694,7 @@
   <div class="tab-pane" id="tab-review">
     <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:8px">
       <h1 style="margin-bottom:0">Review</h1>
-      <button class="run-btn" id="refresh-data-btn" onclick="reloadAllData()" style="font-size:12px;padding:6px 16px;border-color:var(--muted)">↻ Refresh Data</button>
+      <button class="run-btn" id="refresh-data-btn" onclick="reloadAllData()" style="font-size:13px;padding:7px 16px;border-color:var(--muted)">↻ Refresh Data</button>
     </div>
     <p class="dim" style="margin-bottom:20px">Approve staged items below to commit them to the final database.</p>
 
@@ -573,13 +708,29 @@
 
       <!-- pipeline run controls -->
       <div class="run-trigger-row" style="justify-content:flex-start;margin-bottom:20px">
-        <span style="color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:5px 0;align-self:center">Run</span>
+        <span style="color:var(--subtle);font-size:12px;text-transform:uppercase;letter-spacing:.06em;padding:5px 0;align-self:center">Run</span>
         <button class="run-btn" onclick="triggerRun('scan')">Scan sources</button>
         <button class="run-btn" onclick="triggerRun('weekly')">Weekly scrape</button>
         <button class="run-btn" onclick="triggerRun('digest')">Generate digest</button>
         <button class="run-btn" onclick="reloadStagingAndData()" style="margin-left:auto">↻ Refresh</button>
       </div>
-      <div id="run-status" style="font-size:12px;color:var(--muted);min-height:18px;margin-bottom:16px"></div>
+      <div id="run-status" style="font-size:13px;color:var(--muted);min-height:20px;margin-bottom:16px"></div>
+
+      <div class="filter-panel">
+        <div class="filter-row">
+          <input class="filter-input" id="review-search" type="search" placeholder="Search staged company, field, source, value...">
+          <span class="filter-count" id="review-filter-count"></span>
+        </div>
+        <div class="filter-row" style="margin-top:10px">
+          <div class="filter-bar" id="review-type-filters">
+            <span class="filter-label">Item</span>
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="updates">Updates</button>
+            <button class="filter-btn" data-filter="events">Events</button>
+            <button class="filter-btn" data-filter="candidates">Candidates</button>
+          </div>
+        </div>
+      </div>
 
       <div class="probe-panel">
         <h2 style="margin-top:0">Add Company</h2>
@@ -615,6 +766,21 @@
 <script>
 // ── helpers ──────────────────────────────────────────────────────────────────
 
+function applyTheme(theme) {
+  const next = theme === 'light' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = next;
+  localStorage.setItem('theme', next);
+  const btn = document.getElementById('theme-toggle');
+  if (btn) btn.textContent = next === 'dark' ? 'Light' : 'Dark';
+}
+
+function toggleTheme() {
+  const current = document.documentElement.dataset.theme || 'dark';
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+}
+
+applyTheme(localStorage.getItem('theme') || 'dark');
+
 function fmtUSD(v) {
   if (!v) return '—';
   v = parseFloat(v);
@@ -648,6 +814,51 @@ function fmtPayload(type, payload) {
   if (type === 'customer_win')      return `Customer: ${payload.customer_name || '?'}`;
   if (type === 'product_launch')    return `Product: ${payload.product_name || '?'}`;
   return JSON.stringify(payload).slice(0, 80);
+}
+
+function norm(v) {
+  return String(v ?? '').toLowerCase();
+}
+
+function matchesQuery(values, query) {
+  const q = norm(query).trim();
+  if (!q) return true;
+  return values.some(v => norm(v).includes(q));
+}
+
+function activeFilter(selector) {
+  return document.querySelector(`${selector} .filter-btn.active`)?.dataset.filter || 'all';
+}
+
+function setOptions(selectId, values, allLabel, format = v => v) {
+  const el = document.getElementById(selectId);
+  if (!el) return;
+  const selected = el.value || 'all';
+  const opts = [...new Set(values.filter(Boolean).map(String))].sort((a, b) => a.localeCompare(b));
+  el.innerHTML = [`<option value="all">${allLabel}</option>`]
+    .concat(opts.map(v => `<option value="${v.replace(/"/g, '&quot;')}">${format(v)}</option>`))
+    .join('');
+  el.value = opts.includes(selected) ? selected : 'all';
+}
+
+function wireButtonFilter(selector, draw) {
+  document.querySelectorAll(`${selector} .filter-btn`).forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll(`${selector} .filter-btn`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      draw();
+    };
+  });
+}
+
+function wireInput(id, draw) {
+  const el = document.getElementById(id);
+  if (el) el.oninput = draw;
+}
+
+function wireChange(id, draw) {
+  const el = document.getElementById(id);
+  if (el) el.onchange = draw;
 }
 
 // ── tabs ─────────────────────────────────────────────────────────────────────
@@ -687,18 +898,39 @@ function renderStats(stats) {
 }
 
 function renderCompanies(companies) {
-  let filter = 'all';
+  setOptions('company-country-filter', companies.map(c => c.hq_country), 'All countries');
+  setOptions('company-stage-filter', companies.map(c => c.stage_focus), 'All stages', v => v.replace(/_/g, ' '));
+  setOptions('company-round-filter', companies.map(c => c.latest_round_type), 'All rounds', v => v.replace(/_/g, ' '));
 
   function draw() {
-    const rows = filter === 'all' ? companies : companies.filter(c => c.status === filter);
+    const status = activeFilter('#status-filters');
+    const query = document.getElementById('company-search')?.value || '';
+    const country = document.getElementById('company-country-filter')?.value || 'all';
+    const stage = document.getElementById('company-stage-filter')?.value || 'all';
+    const round = document.getElementById('company-round-filter')?.value || 'all';
+    const rows = companies.filter(c =>
+      (status === 'all' || c.status === status) &&
+      (country === 'all' || c.hq_country === country) &&
+      (stage === 'all' || c.stage_focus === stage) &&
+      (round === 'all' || c.latest_round_type === round) &&
+      matchesQuery([
+        c.canonical_name, c.website, c.hq_city, c.hq_country, c.target_customer,
+        c.core_product, c.pricing_model, c.business_model_summary, c.technical,
+        c.stage_description, c.latest_round_text, c.funding_trajectory,
+        c.investors_text, c.valuation
+      ], query)
+    );
+
+    const count = document.getElementById('company-filter-count');
+    if (count) count.textContent = `${rows.length} of ${companies.length}`;
 
     // summary table
-    document.getElementById('companies-tbody').innerHTML = rows.map(c => `
+    document.getElementById('companies-tbody').innerHTML = rows.length ? rows.map(c => `
       <tr>
         <td>
           <div>
             <a class="company-name" href="${c.website||'#'}" target="_blank">${c.canonical_name}</a>
-            ${c.last_scrape_error ? `<span class="badge" style="background:#c0392b;margin-left:6px;cursor:help" title="${c.last_scrape_error.replace(/"/g,'&quot;')}">scrape error</span>` : ''}
+            ${c.last_scrape_error ? `<span class="badge" style="background:var(--danger);color:var(--on-danger);margin-left:6px;cursor:help" title="${c.last_scrape_error.replace(/"/g,'&quot;')}">scrape error</span>` : ''}
           </div>
           ${c.website ? `<a class="company-url" href="${c.website}" target="_blank">${c.website.replace(/^https?:\/\/(www\.)?/,'').split('/')[0]}</a>` : ''}
         </td>
@@ -709,17 +941,17 @@ function renderCompanies(companies) {
         <td class="amount">${fmtUSD(c.latest_round_amount_usd)}</td>
         <td class="dim">${c.latest_round_date ? c.latest_round_date.slice(0,7) : '—'}</td>
       </tr>
-    `).join('');
+    `).join('') : '<tr><td colspan="7" class="dim">No companies match these filters.</td></tr>';
 
     // detail table
-    document.getElementById('detail-tbody').innerHTML = rows.map(c => `
+    document.getElementById('detail-tbody').innerHTML = rows.length ? rows.map(c => `
       <tr>
         <td class="company-col">
           ${c.canonical_name}
           ${c.website ? `<a href="${c.website}" target="_blank">${c.website.replace(/^https?:\/\/(www\.)?/,'').split('/')[0]}</a>` : ''}
-          ${c.last_scrape_error ? `<div style="color:#e74c3c;font-size:11px;margin-top:3px">⚠ last scrape failed — fields may be stale. <span style="opacity:.7">${c.last_scrape_error.slice(0,100)}</span></div>` : ''}
+          ${c.last_scrape_error ? `<div style="color:var(--danger);font-size:13px;margin-top:5px">⚠ last scrape failed — fields may be stale. <span style="opacity:.8">${c.last_scrape_error.slice(0,100)}</span></div>` : ''}
         </td>
-        <td>${c.last_scrape_error ? '<span style="color:#e74c3c;font-size:12px">scrape error</span>' : (c.business_model_summary || '<span class="dim">—</span>')}</td>
+        <td>${c.last_scrape_error ? '<span style="color:var(--danger);font-size:13px">scrape error</span>' : (c.business_model_summary || '<span class="dim">—</span>')}</td>
         <td>${c.technical || '<span class="dim">—</span>'}</td>
         <td>${c.stage_description || '<span class="dim">—</span>'}</td>
         <td>${c.latest_round_text || '<span class="dim">—</span>'}</td>
@@ -727,27 +959,35 @@ function renderCompanies(companies) {
         <td>${c.investors_text || '<span class="dim">—</span>'}</td>
         <td>${c.valuation || '<span class="dim">—</span>'}</td>
       </tr>
-    `).join('');
+    `).join('') : '<tr><td colspan="8" class="dim">No matching company details.</td></tr>';
   }
 
   draw();
 
-  document.querySelectorAll('#status-filters .filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#status-filters .filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      filter = btn.dataset.filter;
-      draw();
-    });
-  });
+  wireButtonFilter('#status-filters', draw);
+  wireInput('company-search', draw);
+  wireChange('company-country-filter', draw);
+  wireChange('company-stage-filter', draw);
+  wireChange('company-round-filter', draw);
 }
 
 function renderEvents(events) {
-  let filter = 'all';
   const sorted = [...events].sort((a, b) => (b.event_date||'').localeCompare(a.event_date||''));
 
   function draw() {
-    const rows = filter === 'all' ? sorted : sorted.filter(e => e.event_type === filter);
+    const filter = activeFilter('#type-filters');
+    const query = document.getElementById('event-search')?.value || '';
+    const tier = document.getElementById('event-tier-filter')?.value || 'all';
+    const rows = sorted.filter(e =>
+      (filter === 'all' || e.event_type === filter) &&
+      (tier === 'all' || String(e.source_tier || '') === tier) &&
+      matchesQuery([
+        e.canonical_name, e.event_type, e.event_date, e.source_url,
+        fmtPayload(e.event_type, e.payload), JSON.stringify(e.payload || {})
+      ], query)
+    );
+    const count = document.getElementById('event-filter-count');
+    if (count) count.textContent = `${rows.length} of ${events.length}`;
     if (!rows.length) {
       document.getElementById('events-list').innerHTML = '<div class="notice">No events for this filter.</div>';
       return;
@@ -765,36 +1005,50 @@ function renderEvents(events) {
 
   draw();
 
-  document.querySelectorAll('#type-filters .filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('#type-filters .filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      filter = btn.dataset.filter;
-      draw();
-    });
-  });
+  wireButtonFilter('#type-filters', draw);
+  wireInput('event-search', draw);
+  wireChange('event-tier-filter', draw);
 }
 
 function renderInvestors(investors) {
-  // build matrix: rows = investors, cols = companies
-  const invSet = [...new Set(investors.map(r => r.investor))].sort();
-  const compSet = [...new Set(investors.map(r => r.company))].sort();
+  setOptions('investor-company-filter', investors.map(r => r.company), 'All companies');
 
-  const lookup = {};
-  investors.forEach(r => { lookup[`${r.investor}|${r.company}`] = r.relation_subtype || 'follow'; });
+  function draw() {
+    const query = document.getElementById('investor-search')?.value || '';
+    const company = document.getElementById('investor-company-filter')?.value || 'all';
+    const roleFilter = document.getElementById('investor-role-filter')?.value || 'all';
+    const rows = investors.filter(r =>
+      (company === 'all' || r.company === company) &&
+      (roleFilter === 'all' || r.relation_subtype === roleFilter) &&
+      matchesQuery([r.investor, r.company, r.relation_subtype], query)
+    );
 
-  document.getElementById('investor-header').innerHTML =
-    '<th>Investor</th>' + compSet.map(c => `<th style="font-size:10px;max-width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c}</th>`).join('');
+    const count = document.getElementById('investor-filter-count');
+    if (count) count.textContent = `${rows.length} of ${investors.length}`;
 
-  document.getElementById('investor-tbody').innerHTML = invSet.map(inv => {
-    const cols = compSet.map(comp => {
-      const role = lookup[`${inv}|${comp}`];
-      if (!role) return '<td></td>';
-      const cls = role === 'lead' ? 'lead' : '';
-      return `<td style="text-align:center"><span class="matrix-dot ${cls}" title="${role}"></span></td>`;
-    }).join('');
-    return `<tr><td>${inv}</td>${cols}</tr>`;
-  }).join('');
+    const invSet = [...new Set(rows.map(r => r.investor))].sort();
+    const compSet = [...new Set(rows.map(r => r.company))].sort();
+    const lookup = {};
+    rows.forEach(r => { lookup[`${r.investor}|${r.company}`] = r.relation_subtype || 'follow'; });
+
+    document.getElementById('investor-header').innerHTML =
+      '<th>Investor</th>' + compSet.map(c => `<th style="font-size:12px;max-width:110px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${c}</th>`).join('');
+
+    document.getElementById('investor-tbody').innerHTML = invSet.length ? invSet.map(inv => {
+      const cols = compSet.map(comp => {
+        const role = lookup[`${inv}|${comp}`];
+        if (!role) return '<td></td>';
+        const cls = role === 'lead' ? 'lead' : '';
+        return `<td style="text-align:center"><span class="matrix-dot ${cls}" title="${role}"></span></td>`;
+      }).join('');
+      return `<tr><td>${inv}</td>${cols}</tr>`;
+    }).join('') : '<tr><td class="dim">No investor relations match these filters.</td></tr>';
+  }
+
+  draw();
+  wireInput('investor-search', draw);
+  wireChange('investor-company-filter', draw);
+  wireChange('investor-role-filter', draw);
 }
 
 // ── Review Tab ────────────────────────────────────────────────────────────────
@@ -847,20 +1101,44 @@ function renderStagingData(data) {
   if (total > 0) { badge.textContent = total; badge.style.display = 'inline'; }
   else badge.style.display = 'none';
 
+  const query = document.getElementById('review-search')?.value || '';
+  const typeFilter = activeFilter('#review-type-filters');
+  const updateRows = typeFilter === 'all' || typeFilter === 'updates'
+    ? updates.filter(u => matchesQuery([
+        u.company_name, u.field_name, u.old_value, u.new_value, u.source_url,
+        u.status, u.confidence
+      ], query))
+    : [];
+  const eventRows = typeFilter === 'all' || typeFilter === 'events'
+    ? events.filter(e => matchesQuery([
+        e.company_name, e.event_type, e.event_date, JSON.stringify(e.payload || {}), e.source_url,
+        e.status, e.is_duplicate ? 'duplicate' : ''
+      ], query))
+    : [];
+  const candidateRows = typeFilter === 'all' || typeFilter === 'candidates'
+    ? candidates.filter(c => matchesQuery([
+        c.discovered_name, c.discovered_url, c.discovery_reason,
+        c.discovery_source, c.status
+      ], query))
+    : [];
+  const filteredTotal = updateRows.length + eventRows.length + candidateRows.length;
+  const count = document.getElementById('review-filter-count');
+  if (count) count.textContent = `${filteredTotal} of ${total}`;
+
   let html = '';
 
-  if (updates.length) {
+  if (updateRows.length) {
     html += `<div class="staging-section">
-      <h2>Company Field Updates (${updates.length})</h2>
+      <h2>Company Field Updates (${updateRows.length})</h2>
       ${_bulkBar('updates', 'Select all')}`;
-    updates.forEach(u => {
+    updateRows.forEach(u => {
       html += `<div class="staging-card" id="card-updates-${u.id}">
         <div class="staging-card-header">
           <input type="checkbox" class="card-checkbox item-cb" data-type="updates" data-id="${u.id}"
                  onchange="onCheckChange('updates')">
           <span class="staging-company">${u.company_name || '—'}</span>
           <span class="staging-field">${u.field_name}</span>
-          <span class="dim" style="font-size:11px">conf ${Math.round((u.confidence||0)*100)}%</span>
+          <span class="dim" style="font-size:13px">conf ${Math.round((u.confidence||0)*100)}%</span>
         </div>
         <div class="staging-diff">
           <span class="old-val">${_fmtVal(u.old_value)}</span>
@@ -877,11 +1155,11 @@ function renderStagingData(data) {
     html += '</div>';
   }
 
-  if (events.length) {
+  if (eventRows.length) {
     html += `<div class="staging-section">
-      <h2>New Events (${events.length})</h2>
+      <h2>New Events (${eventRows.length})</h2>
       ${_bulkBar('events', 'Select all')}`;
-    events.forEach(e => {
+    eventRows.forEach(e => {
       let pl = {};
       try { pl = typeof e.payload === 'string' ? JSON.parse(e.payload) : (e.payload || {}); } catch {}
       html += `<div class="staging-card" id="card-events-${e.id}">
@@ -893,12 +1171,12 @@ function renderStagingData(data) {
           <span class="dim">${e.event_date || ''}</span>
           ${e.is_duplicate ? '<span class="staging-dup">already in DB</span>' : ''}
         </div>
-        <div style="font-size:12px;margin-bottom:9px">${fmtPayload(e.event_type, pl)}</div>
+        <div style="font-size:14px;margin-bottom:11px">${fmtPayload(e.event_type, pl)}</div>
         ${e.source_url ? `<div class="staging-source">via <a href="${e.source_url}" target="_blank">${e.source_url.slice(0,80)}</a></div>` : ''}
         <div class="staging-actions">
           ${!e.is_duplicate
             ? `<button class="btn-approve" onclick="reviewAction('events','${e.id}','approve')">Approve</button>`
-            : `<span class="dim" style="font-size:11px">duplicate — skip or reject</span>`}
+            : `<span class="dim" style="font-size:13px">duplicate — skip or reject</span>`}
           <button class="btn-reject" onclick="reviewAction('events','${e.id}','reject')">Reject</button>
         </div>
       </div>`;
@@ -906,11 +1184,11 @@ function renderStagingData(data) {
     html += '</div>';
   }
 
-  if (candidates.length) {
+  if (candidateRows.length) {
     html += `<div class="staging-section">
-      <h2>New Competitor Candidates (${candidates.length})</h2>
+      <h2>New Competitor Candidates (${candidateRows.length})</h2>
       ${_bulkBar('candidates', 'Select all')}`;
-    candidates.forEach(c => {
+    candidateRows.forEach(c => {
       html += `<div class="staging-card" id="card-candidates-${c.id}">
         <div class="staging-card-header">
           <input type="checkbox" class="card-checkbox item-cb" data-type="candidates" data-id="${c.id}"
@@ -918,7 +1196,7 @@ function renderStagingData(data) {
           <span class="staging-company">${c.discovered_name}</span>
           ${c.discovered_url ? `<a class="company-url" href="${c.discovered_url}" target="_blank">${c.discovered_url.slice(0,50)}</a>` : ''}
         </div>
-        ${c.discovery_reason ? `<div style="font-size:12px;color:var(--muted);margin-bottom:9px">${c.discovery_reason}</div>` : ''}
+        ${c.discovery_reason ? `<div style="font-size:14px;color:var(--muted);margin-bottom:11px">${c.discovery_reason}</div>` : ''}
         ${c.discovery_source ? `<div class="staging-source">via <a href="${c.discovery_source}" target="_blank">${c.discovery_source.slice(0,60)}</a></div>` : ''}
         <div class="staging-actions">
           <button class="btn-approve" onclick="reviewAction('candidates','${c.id}','approve')">Add to Tracking</button>
@@ -929,8 +1207,15 @@ function renderStagingData(data) {
     html += '</div>';
   }
 
-  if (!html) html = '<div class="notice" style="margin-top:0">No pending items — all caught up!</div>';
+  if (!html) {
+    html = total
+      ? '<div class="notice" style="margin-top:0">No pending items match these filters.</div>'
+      : '<div class="notice" style="margin-top:0">No pending items — all caught up!</div>';
+  }
   document.getElementById('staging-content').innerHTML = html;
+
+  wireInput('review-search', () => renderStagingData(data));
+  wireButtonFilter('#review-type-filters', () => renderStagingData(data));
 }
 
 async function reviewAction(type, id, action) {
@@ -985,23 +1270,45 @@ function renderDigests(digests, companies) {
 
   const list = document.getElementById('digest-list');
   if (!digests || !digests.length) {
+    const count = document.getElementById('digest-filter-count');
+    if (count) count.textContent = '0 of 0';
     list.innerHTML = '<div class="notice">No digests yet — run: <code style="background:var(--surface2);padding:2px 8px;border-radius:3px">python pipeline.py digest</code></div>';
     return;
   }
 
-  list.innerHTML = digests.map((d, i) => {
+  function draw() {
+    const query = document.getElementById('digest-search')?.value || '';
+    const type = document.getElementById('digest-type-filter')?.value || 'all';
+    const rows = digests.filter(d =>
+      (type === 'all' || d.digest_type === type) &&
+      matchesQuery([d.digest_type, d.created_at, d.content], query)
+    );
+    const count = document.getElementById('digest-filter-count');
+    if (count) count.textContent = `${rows.length} of ${digests.length}`;
+
+    if (!rows.length) {
+      list.innerHTML = '<div class="notice">No digests match these filters.</div>';
+      return;
+    }
+
+    list.innerHTML = rows.map((d, i) => {
     const typeLabel = d.digest_type === 'on_demand' ? 'on demand' : d.digest_type || 'weekly';
     const typeClass = d.digest_type === 'on_demand' ? 'digest-type-on_demand' : 'digest-type-weekly';
     const date = (d.created_at || '').slice(0, 16).replace('T', ' ');
     return `<div class="digest-card" onclick="toggleDigest(${i})">
       <div class="digest-card-header">
         <span class="digest-type-badge ${typeClass}">${typeLabel}</span>
-        <span style="color:var(--text);font-size:13px">${d.content ? d.content.split('\n')[0].replace(/^#+\s*/,'') : 'Digest'}</span>
-        <span class="dim" style="font-size:11px;margin-left:auto">${date}</span>
+        <span style="color:var(--text);font-size:15px">${d.content ? d.content.split('\n')[0].replace(/^#+\s*/,'') : 'Digest'}</span>
+        <span class="dim" style="font-size:13px;margin-left:auto">${date}</span>
       </div>
       <div class="digest-body" id="digest-body-${i}">${escHtml(d.content || '')}</div>
     </div>`;
-  }).join('');
+    }).join('');
+  }
+
+  draw();
+  wireInput('digest-search', draw);
+  wireChange('digest-type-filter', draw);
 }
 
 function toggleDigest(i) {
@@ -1167,12 +1474,12 @@ function renderTimeline(runs) {
     return `
       <div class="timeline-row" onclick="toggleRunDetail('${r.id}')">
         <span><span class="trig-badge trig-${r.trigger}">${r.trigger}</span></span>
-        <span class="dim" style="font-size:12px">${(r.started_at||'').slice(0,16).replace('T',' ')}</span>
+        <span class="dim" style="font-size:13px">${(r.started_at||'').slice(0,16).replace('T',' ')}</span>
         <span class="ts-${r.status}">${r.status}</span>
-        <span class="dim" style="font-size:12px">${summary}</span>
+        <span class="dim" style="font-size:13px">${summary}</span>
       </div>
       <div class="timeline-detail" id="detail-${r.id}">
-        <div class="dim" style="font-size:11px;padding:8px 0">Loading…</div>
+        <div class="dim" style="font-size:13px;padding:8px 0">Loading…</div>
       </div>`;
   }).join('');
 
@@ -1193,7 +1500,7 @@ async function toggleRunDetail(runId) {
     const { updates = [], events = [], candidates = [] } = await r.json();
     el.innerHTML = renderRunDetail(updates, events, candidates);
   } catch {
-    el.innerHTML = '<div class="dim" style="font-size:12px;padding:6px 0">Could not load detail.</div>';
+    el.innerHTML = '<div class="dim" style="font-size:13px;padding:6px 0">Could not load detail.</div>';
   }
 }
 
@@ -1234,7 +1541,7 @@ function renderRunDetail(updates, events, candidates) {
       html += `<div class="detail-item">
         <span class="detail-company">${e.company_name||'—'}</span>
         <span class="detail-desc">
-          <span style="color:var(--muted);font-size:11px;text-transform:uppercase">${(e.event_type||'').replace(/_/g,' ')}</span>
+          <span style="color:var(--subtle);font-size:12px;text-transform:uppercase">${(e.event_type||'').replace(/_/g,' ')}</span>
           ${e.event_date ? `<span class="dim"> · ${e.event_date}</span>` : ''}
           ${desc ? ` · ${desc}` : ''}
           ${e.is_duplicate ? ' <span class="staging-dup">dup</span>' : ''}
@@ -1261,7 +1568,7 @@ function renderRunDetail(updates, events, candidates) {
     html += '</div>';
   }
 
-  if (!html) html = '<div class="dim" style="font-size:12px;padding:6px 0">Nothing was staged in this run.</div>';
+  if (!html) html = '<div class="dim" style="font-size:13px;padding:6px 0">Nothing was staged in this run.</div>';
   return html;
 }
 
@@ -1277,8 +1584,8 @@ function _renderProgress(progress) {
   if (!progress || !progress.length) return '';
   return progress.map(p =>
     p.status === 'error'
-      ? `<div style="color:#e74c3c;font-size:12px">✗ ${p.company}: <span style="opacity:.8">${p.error||''}</span></div>`
-      : `<div style="color:var(--active-text);font-size:12px">✓ ${p.company}</div>`
+      ? `<div style="color:var(--danger);font-size:13px">✗ ${p.company}: <span style="opacity:.8">${p.error||''}</span></div>`
+      : `<div style="color:var(--active-text);font-size:13px">✓ ${p.company}</div>`
   ).join('');
 }
 
@@ -1306,12 +1613,12 @@ async function triggerRun(trigger) {
         clearInterval(poll);
         const ok  = (jd.progress||[]).filter(p => p.status === 'ok').length;
         const err = (jd.progress||[]).filter(p => p.status === 'error').length;
-        const summary = jd.progress?.length ? ` · ${ok} ok${err ? `, <span style="color:#e74c3c">${err} failed</span>` : ''}` : '';
+        const summary = jd.progress?.length ? ` · ${ok} ok${err ? `, <span style="color:var(--danger)">${err} failed</span>` : ''}` : '';
         const icon = jd.status === 'error' ? '✗' : '✓';
-        const color = jd.status === 'error' ? '#e74c3c' : 'var(--active-text)';
+        const color = jd.status === 'error' ? 'var(--danger)' : 'var(--active-text)';
         if (statusEl) statusEl.innerHTML =
           `<span style="color:${color}">${icon} ${trigger} ${jd.status}${summary}</span>` +
-          (jd.error ? `<div style="color:#e74c3c;font-size:12px;margin-top:4px">${jd.error}</div>` : '') +
+          (jd.error ? `<div style="color:var(--danger);font-size:13px;margin-top:4px">${jd.error}</div>` : '') +
           `<div id="run-progress" style="margin-top:6px">${_renderProgress(jd.progress)}</div>`;
         reloadStagingAndData();
         loadTimeline();
